@@ -8,6 +8,7 @@ export default function Home() {
   const heroRef = useRef(null);
   const [fadeSections, setFadeSections] = useState([]);
 
+  // 背景画像切替
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -15,6 +16,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // 下層セクションフェード
   useEffect(() => {
     const handleScroll = () => {
       const sectionEls = document.querySelectorAll(".fade-section");
@@ -32,9 +34,11 @@ export default function Home() {
   return (
     <>
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Noto+Serif+JP:wght@400;600&family=Playfair+Display:wght@500&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Noto+Serif+JP:wght@400;600&family=Playfair+Display:wght@500&display=swap");
 
-        html, body, #__next {
+        html,
+        body,
+        #__next {
           margin: 0;
           padding: 0;
           background-image: url("/washi_gold.jpg");
@@ -45,7 +49,10 @@ export default function Home() {
           scroll-behavior: smooth;
         }
 
-        a { text-decoration: none; color: inherit; }
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
 
         /* ===== Hero Section ===== */
         .hero-wrapper {
@@ -55,7 +62,7 @@ export default function Home() {
           border-radius: 16px;
           overflow: hidden;
           position: relative;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         .hero-scroll {
@@ -63,7 +70,9 @@ export default function Home() {
           overflow-y: scroll;
           scrollbar-width: none;
         }
-        .hero-scroll::-webkit-scrollbar { display: none; }
+        .hero-scroll::-webkit-scrollbar {
+          display: none;
+        }
 
         .hero-image {
           position: absolute;
@@ -83,8 +92,12 @@ export default function Home() {
         }
 
         @keyframes zoomOutHero {
-          0% { transform: scale(1.15); }
-          100% { transform: scale(1); }
+          0% {
+            transform: scale(1.15);
+          }
+          100% {
+            transform: scale(1);
+          }
         }
 
         /* ===== Hero Content ===== */
@@ -93,7 +106,7 @@ export default function Home() {
           padding-top: 60vh;
           color: #fff;
           text-align: center;
-          font-family: 'Noto Serif JP', serif;
+          font-family: "Noto Serif JP", serif;
         }
         .fade-text {
           opacity: 0;
@@ -102,7 +115,10 @@ export default function Home() {
           animation-delay: 0.4s;
         }
         @keyframes fadeInUp {
-          to { opacity: 1; transform: translateY(0); }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         /* ===== Navigation ===== */
@@ -116,40 +132,51 @@ export default function Home() {
           z-index: 10;
           color: #fff;
           text-align: center;
-          font-family: 'Playfair Display', 'Noto Serif JP', serif;
+          font-family: "Playfair Display", "Noto Serif JP", serif;
           letter-spacing: 0.1em;
         }
-        .hero-nav .nav-item:hover { color: #e6dcc6; }
-        .hero-nav .jp { display: block; font-size: 0.8rem; margin-top: 2px; }
+        .hero-nav .nav-item:hover {
+          color: #e6dcc6;
+        }
+        .hero-nav .jp {
+          display: block;
+          font-size: 0.8rem;
+          margin-top: 2px;
+        }
 
         /* ===== Hamburger ===== */
         .menu-icon {
           position: absolute;
           top: 20px;
           right: 28px;
-          width: 32px;
-          height: 22px;
-          z-index: 15;
+          width: 30px;
+          height: 20px;
+          z-index: 20;
           cursor: pointer;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          transition: transform 0.3s ease;
         }
-        .menu-icon:hover { transform: scale(1.05); }
         .bar {
           height: 2px;
           background: #fff;
           border-radius: 2px;
-          transition: all 0.3s ease;
+          transition: all 0.4s ease;
         }
-        .menu-icon:hover .bar:nth-child(2) { width: 80%; }
-        .menu-icon:hover .bar:nth-child(3) { width: 60%; }
+        .menu-icon.open .bar:nth-child(1) {
+          transform: rotate(45deg) translateY(8px);
+        }
+        .menu-icon.open .bar:nth-child(2) {
+          opacity: 0;
+        }
+        .menu-icon.open .bar:nth-child(3) {
+          transform: rotate(-45deg) translateY(-8px);
+        }
 
         /* ===== Scroll Indicator ===== */
         .scroll-indicator {
           position: absolute;
-          bottom: 80px;
+          bottom: 100px;
           left: 50%;
           transform: translateX(-50%);
           display: flex;
@@ -161,7 +188,7 @@ export default function Home() {
           animation: fadeIn 2s ease forwards;
         }
         .scroll-text {
-          font-family: 'Playfair Display', serif;
+          font-family: "Playfair Display", serif;
           font-size: 1.1rem;
           letter-spacing: 0.1em;
           text-transform: lowercase;
@@ -177,18 +204,109 @@ export default function Home() {
         }
 
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         @keyframes arrowFloat {
-          0%, 100% { transform: translateY(0); opacity: 0.7; }
-          50% { transform: translateY(6px); opacity: 1; }
+          0%,
+          100% {
+            transform: translateY(0);
+            opacity: 0.7;
+          }
+          50% {
+            transform: translateY(6px);
+            opacity: 1;
+          }
+        }
+
+        /* ===== Reservation Button ===== */
+        .reservation-btn {
+          position: absolute;
+          bottom: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #e6e0d1;
+          color: #333;
+          border-radius: 999px;
+          padding: 0.8rem 2rem;
+          font-family: "Noto Serif JP", serif;
+          font-size: 1rem;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
+        }
+        .reservation-btn span {
+          font-family: "Playfair Display", serif;
+          font-size: 0.9rem;
+          color: #555;
+        }
+        .reservation-btn:hover {
+          background-color: #ded7c6;
+          transform: translateX(-50%) scale(1.03);
+        }
+
+        /* ===== Slide Menu ===== */
+        .slide-menu {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 65%;
+          max-width: 420px;
+          height: 100%;
+          background-image: url("/washi_gold.jpg");
+          background-size: cover;
+          background-position: center;
+          color: #333;
+          z-index: 50;
+          padding: 5rem 2.5rem;
+          transform: translateX(100%);
+          transition: transform 0.6s ease;
+        }
+        .slide-menu.open {
+          transform: translateX(0);
+        }
+        .slide-menu a {
+          display: block;
+          font-size: 1.5rem;
+          margin-bottom: 2rem;
+          opacity: 0;
+          animation: fadeUpMenu 0.8s forwards;
+        }
+        .slide-menu a span {
+          display: block;
+          font-size: 0.9rem;
+          color: #666;
+          margin-top: 4px;
+        }
+        @keyframes fadeUpMenu {
+          from {
+            opacity: 0;
+            transform: translateY(15px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         /* ===== Fade Section ===== */
         @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
 
@@ -197,20 +315,37 @@ export default function Home() {
           {images.map((src, i) => (
             <div
               key={i}
-              className={`hero-image ${currentIndex === i ? "active" : "inactive"}`}
+              className={`hero-image ${
+                currentIndex === i ? "active" : "inactive"
+              }`}
               style={{ backgroundImage: `url(${src})` }}
             />
           ))}
 
           {/* 上部メニュー */}
           <nav className="hero-nav">
-            <Link href="/about"><div className="nav-item">ABOUT<span className="jp">宿について</span></div></Link>
-            <Link href="/stay"><div className="nav-item">STAY<span className="jp">ご宿泊</span></div></Link>
-            <Link href="/contact"><div className="nav-item">CONTACT<span className="jp">お問い合わせ</span></div></Link>
+            <Link href="/about">
+              <div className="nav-item">
+                ABOUT<span className="jp">宿について</span>
+              </div>
+            </Link>
+            <Link href="/stay">
+              <div className="nav-item">
+                STAY<span className="jp">ご宿泊</span>
+              </div>
+            </Link>
+            <Link href="/contact">
+              <div className="nav-item">
+                CONTACT<span className="jp">お問い合わせ</span>
+              </div>
+            </Link>
           </nav>
 
           {/* ハンバーガー */}
-          <div className="menu-icon" onClick={() => setMenuOpen(true)}>
+          <div
+            className={`menu-icon ${menuOpen ? "open" : ""}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             <div className="bar" />
             <div className="bar" />
             <div className="bar" />
@@ -218,10 +353,16 @@ export default function Home() {
 
           {/* Hero text */}
           <div className="hero-content">
-            <h1 className="fade-text" style={{ fontSize: "3rem", marginBottom: "1rem" }}>宿 -SHUKU-</h1>
-            <p className="fade-text" style={{ fontSize: "1.2rem", maxWidth: "600px", margin: "0 auto" }}>
+            <h1 className="fade-text" style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+              宿 -SHUKU-
+            </h1>
+            <p
+              className="fade-text"
+              style={{ fontSize: "1.2rem", maxWidth: "600px", margin: "0 auto" }}
+            >
               心とからだをほどく。忍冬香る古蔵にて。
-              <br />静けさの中に佇む時間をお愉しみください。
+              <br />
+              静けさの中に佇む時間をお愉しみください。
             </p>
           </div>
 
@@ -232,7 +373,21 @@ export default function Home() {
               <path d="M4 9l8 8 8-8" />
             </svg>
           </div>
+
+          {/* 宿泊予約ボタン */}
+          <Link href="/stay">
+            <div className="reservation-btn">
+              宿泊予約 <span>Reservation</span>
+            </div>
+          </Link>
         </div>
+      </div>
+
+      {/* Slide Menu */}
+      <div className={`slide-menu ${menuOpen ? "open" : ""}`}>
+        <Link href="/about">ABOUT<span>宿について</span></Link>
+        <Link href="/stay">STAY<span>ご宿泊</span></Link>
+        <Link href="/contact">CONTACT<span>お問い合わせ</span></Link>
       </div>
 
       {/* 下層セクション */}
@@ -246,7 +401,9 @@ export default function Home() {
           className="fade-section"
           style={{
             opacity: fadeSections.includes(i) ? 1 : 0,
-            animation: fadeSections.includes(i) ? "fadeUp 1.2s ease forwards" : "none",
+            animation: fadeSections.includes(i)
+              ? "fadeUp 1.2s ease forwards"
+              : "none",
             padding: "6rem 1rem",
             maxWidth: "800px",
             margin: "0 auto",
@@ -259,7 +416,14 @@ export default function Home() {
         </section>
       ))}
 
-      <footer style={{ textAlign: "center", padding: "1rem", backgroundColor: "#000", color: "#fff" }}>
+      <footer
+        style={{
+          textAlign: "center",
+          padding: "1rem",
+          backgroundColor: "#000",
+          color: "#fff",
+        }}
+      >
         © {new Date().getFullYear()} Secret Beach Villa Fukutsu
       </footer>
     </>
