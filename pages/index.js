@@ -1,13 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const images = ['/IMG_5949.jpeg', '/IMG_5947.jpeg', '/IMG_5941.jpeg'];
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [date, setDate] = useState('');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div style={{ fontFamily: 'sans-serif' }}>
-      <section className="hero">
+      <section
+        className="hero"
+        style={{
+          minHeight: '100vh',
+          backgroundImage: `url(${images[currentIndex]})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+          textAlign: 'center',
+          padding: '0 1rem',
+        }}
+      >
         <h1 style={{ fontSize: '4rem', marginBottom: '1rem' }}>Secret Beach Villa Fukutsu</h1>
-        <p style={{ fontSize: '1.2rem', marginBottom: '2rem', textShadow: '0 1px 3px rgba(0,0,0,.5)' }}>
+        <p
+          style={{
+            fontSize: '1.2rem',
+            marginBottom: '2rem',
+            textShadow: '0 3px 6px rgba(0,0,0,0.5)',
+          }}
+        >
           和モダンの静かな宿泊施設で心休まるひとときを。
         </p>
         <button
@@ -17,7 +47,7 @@ export default function Home() {
             color: '#000',
             borderRadius: '0.5rem',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
           onClick={() =>
             document.getElementById('booking').scrollIntoView({ behavior: 'smooth' })
@@ -34,12 +64,9 @@ export default function Home() {
         </p>
       </section>
 
-      <section
-        id="booking"
-        style={{ padding: '4rem 1rem', textAlign: 'center', backgroundColor: '#f5f5f5' }}
-      >
+      <section id="booking" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
         <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>ご予約</h2>
-        <p style={{ marginBottom: '1rem' }}>宿泊日を選択してください。</p>
+        <p style={{ marginBottom: '1rem' }}>宿泊日を選択してください</p>
         <input
           type="date"
           value={date}
@@ -51,14 +78,14 @@ export default function Home() {
             <button
               style={{
                 padding: '0.75rem 1.5rem',
-                backgroundColor: '#00b894',
+                backgroundColor: '#34d399',
                 color: '#fff',
-                border: 'none',
                 borderRadius: '0.5rem',
-                cursor: 'pointer'
+                border: 'none',
+                cursor: 'pointer',
               }}
             >
-              予約リクエスト
+              ご予約をリクエストする
             </button>
           </div>
         )}
@@ -66,45 +93,29 @@ export default function Home() {
 
       <section id="contact" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
         <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>お問い合わせ</h2>
-        <p>ご質問がありましたらお気軽にお問い合わせください。</p>
+        <p>ご不明な点やご質問がございましたら、お気軽にお問い合わせください。</p>
       </section>
 
       <footer
         style={{
-          textAlign: 'center',
           padding: '1rem',
-          backgroundColor: '#222',
-          color: '#fff'
+          textAlign: 'center',
+          backgroundColor: '#f5f5f5',
+          color: '#333',
         }}
       >
-        © {new Date().getFullYear()} Secret Beach Villa Fukutsu. All rights reserved.
+        &copy; {new Date().getFullYear()} Secret Beach Villa Fukutsu
       </footer>
 
       <style jsx>{`
         .hero {
-          position: relative;
-          min-height: 100vh;
-          background-image: url('/IMG_5949.jpeg');
-          background-size: cover;
-          background-position: center;
-          color: #fff;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          overflow: hidden;
-          animation: zoom 20s linear infinite;
+          animation: zoomOut 8s linear infinite;
         }
-
-        @keyframes zoom {
-          0% {
-            transform: scale(1);
-          }
-          50% {
+        @keyframes zoomOut {
+          from {
             transform: scale(1.1);
           }
-          100% {
+          to {
             transform: scale(1);
           }
         }
