@@ -59,19 +59,20 @@ export default function Home() {
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
-        .hero-image {
-          position: absolute;
-          inset: 0;
-          background-size: cover;
-          background-position: center;
-          opacity: 0;
-          transform: scale(1.15);
-          transition: opacity 1.5s ease, transform 8s ease;
-        }
-        .hero-image.active {
-          opacity: 1;
-          transform: scale(1);
-        }
+       .hero-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.05); /* start closer to full view */
+  transition: opacity 1.5s ease-in-out, transform 12s ease-out; /* slower, more natural zoom */
+}
+.hero-image.active {
+  opacity: 1;
+  transform: scale(1); /* gentle zoom-out */
+}
+
 
         .hero-container {
           position: relative;
