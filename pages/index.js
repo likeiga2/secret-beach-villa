@@ -6,18 +6,28 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [fadeSections, setFadeSections] = useState([]);
 
-  // 背景切り替え
+  // 背景画像切り替え
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  // パララックス効果
+  // スクロール監視
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      const sectionEls = document.querySelectorAll(".fade-section");
+      sectionEls.forEach((el, i) => {
+        const rect = el.getBoundingClientRect().top;
+        if (rect < window.innerHeight * 0.8) {
+          setFadeSections((prev) => [...new Set([...prev, i])]);
+        }
+      });
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -25,6 +35,8 @@ export default function Home() {
   return (
     <>
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Playfair+Display:wght@500&display=swap');
+
         html,
         body,
         #__next {
@@ -36,21 +48,35 @@ export default function Home() {
           background-attachment: fixed;
           overflow-x: hidden;
         }
+
         a {
           text-decoration: none !important;
           color: inherit !important;
         }
-        @keyframes hamburgerHover {
+
+        /* Hero縮小アニメーション */
+        @keyframes zoomOut {
           0% {
-            transform: scale(1) rotate(0deg);
-          }
-          50% {
-            transform: scale(1.2) rotate(5deg);
+            transform: scale(1.05);
           }
           100% {
-            transform: scale(1) rotate(0deg);
+            transform: scale(1);
           }
         }
+
+        /* 下セクションフェードイン */
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* スライドメニュー */
         @keyframes slideIn {
           from {
             transform: translateX(100%);
@@ -61,15 +87,63 @@ export default function Home() {
             opacity: 1;
           }
         }
-        @keyframes slideOut {
-          from {
-            transform: translateX(0);
+
+        /* ハンバーガー */
+        @keyframes burgerHover {
+          0% {
+            transform: rotate(0deg);
+          }
+          50% {
+            transform: rotate(45deg);
+          }
+          100% {
+            transform: rotate(0deg);
+          }
+        }
+
+        /* 下矢印 */
+        .scroll-indicator {
+          position: absolute;
+          bottom: 24px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: #fff;
+          font-size: 1.4rem;
+          animation: bounce 1.6s infinite;
+          opacity: 0.9;
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translate(-50%, 0);
+            opacity: 0.7;
+          }
+          50% {
+            transform: translate(-50%, 8px);
             opacity: 1;
           }
-          to {
-            transform: translateX(100%);
-            opacity: 0;
-          }
+        }
+
+        /* ナビゲーション */
+        .nav-link {
+          color: #fdfaf5;
+          text-align: center;
+          letter-spacing: 0.1em;
+          transition: color 0.3s ease;
+          text-transform: uppercase;
+          font-family: 'Playfair Display', 'Noto Serif JP', serif;
+        }
+
+        .nav-link span.jp {
+          display: block;
+          font-size: 0.8rem;
+          letter-spacing: 0.05em;
+          font-family: 'Noto Serif JP', serif;
+          margin-top: 2px;
+        }
+
+        .nav-link:hover {
+          color: #e6dcc6;
         }
       `}</style>
 
@@ -77,21 +151,22 @@ export default function Home() {
         style={{
           fontFamily: "'Noto Serif JP', serif",
           margin: 0,
-          padding: "16px", // 全方向に約1cm余白
+          padding: "24px",
         }}
       >
-        {/* ===== Hero Section ===== */}
+        {/* ===== ヒーローセクション ===== */}
         <section
           style={{
             position: "relative",
-            height: "calc(100vh - 32px)", // 上下16pxずつ余白を引く
+            height: "calc(100vh - 48px)",
             borderRadius: "16px",
             overflow: "hidden",
             margin: "0 auto",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+            boxShadow: "0 6px 24px rgba(0,0,0,0.25)",
+            animation: "zoomOut 6s ease-in-out infinite alternate",
           }}
         >
-          {/* 背景画像（クロスフェード＋パララックス） */}
+          {/* 背景画像 */}
           {images.map((src, index) => (
             <div
               key={index}
@@ -103,11 +178,12 @@ export default function Home() {
                 inset: 0,
                 opacity: currentIndex === index ? 1 : 0,
                 transition: "opacity 1.2s ease-in-out",
+                transform: "scale(1.05)",
               }}
             />
           ))}
 
-          {/* ナビゲーションメニュー */}
+          {/* メニュー */}
           <nav
             style={{
               position: "absolute",
@@ -116,27 +192,34 @@ export default function Home() {
               transform: "translateX(-50%)",
               zIndex: 3,
               display: "flex",
-              gap: "2rem",
-              color: "#fff",
-              textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-              fontSize: "0.95rem",
+              gap: "3rem",
+              alignItems: "center",
             }}
           >
             <Link href="/about">
-              <span style={{ color: "#fff", cursor: "pointer" }}>宿について</span>
+              <div className="nav-link">
+                ABOUT
+                <span className="jp">宿について</span>
+              </div>
             </Link>
             <Link href="/stay">
-              <span style={{ color: "#fff", cursor: "pointer" }}>ご宿泊</span>
+              <div className="nav-link">
+                STAY
+                <span className="jp">ご宿泊</span>
+              </div>
             </Link>
             <Link href="/contact">
-              <span style={{ color: "#fff", cursor: "pointer" }}>お問い合わせ</span>
+              <div className="nav-link">
+                CONTACT
+                <span className="jp">お問い合わせ</span>
+              </div>
             </Link>
           </nav>
 
           {/* ハンバーガーメニュー */}
           <div
             onMouseEnter={(e) => {
-              e.currentTarget.style.animation = "hamburgerHover 0.5s ease";
+              e.currentTarget.style.animation = "burgerHover 0.5s ease";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.animation = "none";
@@ -215,10 +298,12 @@ export default function Home() {
             </p>
           </div>
 
+          {/* 下矢印 */}
+          <div className="scroll-indicator">↓</div>
+
           {/* スライドメニュー */}
           {menuOpen && (
             <>
-              {/* 背景ブラー */}
               <div
                 onClick={() => setMenuOpen(false)}
                 style={{
@@ -230,10 +315,8 @@ export default function Home() {
                   backdropFilter: "blur(6px)",
                   backgroundColor: "rgba(0,0,0,0.6)",
                   zIndex: 10,
-                  animation: "fadeIn 0.3s ease-in-out",
                 }}
               />
-              {/* メニュー本体 */}
               <div
                 style={{
                   position: "fixed",
@@ -248,9 +331,7 @@ export default function Home() {
                   color: "#333",
                   padding: "3rem 2rem",
                   zIndex: 11,
-                  animation: menuOpen
-                    ? "slideIn 0.5s ease forwards"
-                    : "slideOut 0.5s ease forwards",
+                  animation: "slideIn 0.5s ease forwards",
                   boxShadow: "-4px 0 20px rgba(0,0,0,0.3)",
                 }}
               >
@@ -289,25 +370,64 @@ export default function Home() {
                   />
                 </div>
 
-                <Link href="/about">
-                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>
-                    宿について
-                  </span>
-                </Link>
-                <Link href="/stay">
-                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>
-                    ご宿泊
-                  </span>
-                </Link>
-                <Link href="/contact">
-                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>
-                    お問い合わせ
-                  </span>
-                </Link>
+                {["about", "stay", "contact"].map((page, i) => (
+                  <Link key={i} href={`/${page}`}>
+                    <span
+                      style={{
+                        display: "block",
+                        margin: "1.5rem 0",
+                        fontSize: "1.5rem",
+                      }}
+                    >
+                      {page === "about"
+                        ? "宿について"
+                        : page === "stay"
+                        ? "ご宿泊"
+                        : "お問い合わせ"}
+                    </span>
+                  </Link>
+                ))}
               </div>
             </>
           )}
         </section>
+
+        {/* ===== 下層セクション ===== */}
+        {[
+          { title: "宿について", text: "古民家をリノベーションし..." },
+          { title: "ご宿泊", text: "チェックイン日とチェックアウト日..." },
+          { title: "お問い合わせ", text: "ご質問・ご相談などお気軽に..." },
+        ].map((s, i) => (
+          <section
+            key={i}
+            className="fade-section"
+            style={{
+              opacity: fadeSections.includes(i) ? 1 : 0,
+              animation: fadeSections.includes(i)
+                ? "fadeUp 1.2s ease forwards"
+                : "none",
+              padding: "6rem 1rem",
+              maxWidth: "800px",
+              margin: "0 auto",
+              textAlign: "center",
+              lineHeight: 1.8,
+            }}
+          >
+            <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>{s.title}</h2>
+            <p>{s.text}</p>
+          </section>
+        ))}
+
+        <footer
+          style={{
+            textAlign: "center",
+            padding: "1rem",
+            backgroundColor: "#000",
+            color: "#fff",
+          }}
+        >
+          © {new Date().getFullYear()} Secret Beach Villa Fukutsu
+        </footer>
       </div>
     </>
   );
