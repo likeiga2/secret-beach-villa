@@ -30,16 +30,26 @@ export default function Home() {
         #__next {
           margin: 0;
           padding: 0;
-          background-color: #e9e5db;
+          background-image: url("/washi_gold.jpg");
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
           overflow-x: hidden;
         }
         a {
           text-decoration: none !important;
           color: inherit !important;
         }
-        .menuButton:hover span {
-          transform: scale(1.1);
-          opacity: 0.8;
+        @keyframes hamburgerHover {
+          0% {
+            transform: scale(1) rotate(0deg);
+          }
+          50% {
+            transform: scale(1.2) rotate(5deg);
+          }
+          100% {
+            transform: scale(1) rotate(0deg);
+          }
         }
         @keyframes slideIn {
           from {
@@ -67,17 +77,18 @@ export default function Home() {
         style={{
           fontFamily: "'Noto Serif JP', serif",
           margin: 0,
-          padding: "0 16px",
+          padding: "16px", // 全方向に約1cm余白
         }}
       >
         {/* ===== Hero Section ===== */}
         <section
           style={{
             position: "relative",
-            height: "100vh",
+            height: "calc(100vh - 32px)", // 上下16pxずつ余白を引く
             borderRadius: "16px",
             overflow: "hidden",
             margin: "0 auto",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
           }}
         >
           {/* 背景画像（クロスフェード＋パララックス） */}
@@ -92,7 +103,6 @@ export default function Home() {
                 inset: 0,
                 opacity: currentIndex === index ? 1 : 0,
                 transition: "opacity 1.2s ease-in-out",
-                willChange: "transform, opacity",
               }}
             />
           ))}
@@ -125,14 +135,19 @@ export default function Home() {
 
           {/* ハンバーガーメニュー */}
           <div
-            className="menuButton"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.animation = "hamburgerHover 0.5s ease";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.animation = "none";
+            }}
             onClick={() => setMenuOpen(true)}
             style={{
               position: "absolute",
               top: "20px",
               right: "20px",
               width: "30px",
-              height: "20px",
+              height: "22px",
               cursor: "pointer",
               zIndex: 4,
               display: "flex",
@@ -170,7 +185,7 @@ export default function Home() {
             />
           </div>
 
-          {/* メインテキスト */}
+          {/* キャッチコピー */}
           <div
             style={{
               position: "relative",
@@ -203,7 +218,7 @@ export default function Home() {
           {/* スライドメニュー */}
           {menuOpen && (
             <>
-              {/* 背景のブラー */}
+              {/* 背景ブラー */}
               <div
                 onClick={() => setMenuOpen(false)}
                 style={{
@@ -218,7 +233,7 @@ export default function Home() {
                   animation: "fadeIn 0.3s ease-in-out",
                 }}
               />
-              {/* スライドパネル */}
+              {/* メニュー本体 */}
               <div
                 style={{
                   position: "fixed",
@@ -227,11 +242,16 @@ export default function Home() {
                   width: "60%",
                   maxWidth: "420px",
                   height: "100%",
-                  backgroundColor: "#f4f1ec",
+                  backgroundImage: "url('/washi_gold.jpg')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
                   color: "#333",
                   padding: "3rem 2rem",
                   zIndex: 11,
-                  animation: menuOpen ? "slideIn 0.4s ease forwards" : "slideOut 0.4s ease forwards",
+                  animation: menuOpen
+                    ? "slideIn 0.5s ease forwards"
+                    : "slideOut 0.5s ease forwards",
+                  boxShadow: "-4px 0 20px rgba(0,0,0,0.3)",
                 }}
               >
                 <div
@@ -270,59 +290,24 @@ export default function Home() {
                 </div>
 
                 <Link href="/about">
-                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>宿について</span>
+                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>
+                    宿について
+                  </span>
                 </Link>
                 <Link href="/stay">
-                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>ご宿泊</span>
+                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>
+                    ご宿泊
+                  </span>
                 </Link>
                 <Link href="/contact">
-                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>お問い合わせ</span>
+                  <span style={{ display: "block", margin: "1rem 0", fontSize: "1.5rem" }}>
+                    お問い合わせ
+                  </span>
                 </Link>
               </div>
             </>
           )}
         </section>
-
-        {/* 下層コンテンツ */}
-        <section id="about" style={{ padding: "6rem 1rem", maxWidth: "800px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>宿について</h2>
-          <p style={{ lineHeight: 1.8 }}>
-            当施設は古民家をリノベーションし、木の温もりとモダンなデザインを融合させた隠れ宿です。
-          </p>
-        </section>
-
-        <section id="booking" style={{ padding: "6rem 1rem", textAlign: "center", backgroundColor: "#f8f8f8" }}>
-          <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>ご宿泊</h2>
-          <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
-            <div>
-              <label htmlFor="checkin">チェックイン</label>
-              <br />
-              <input
-                id="checkin"
-                type="date"
-                style={{ padding: "0.5rem", borderRadius: "0.25rem", border: "1px solid #ccc" }}
-              />
-            </div>
-            <div>
-              <label htmlFor="checkout">チェックアウト</label>
-              <br />
-              <input
-                id="checkout"
-                type="date"
-                style={{ padding: "0.5rem", borderRadius: "0.25rem", border: "1px solid #ccc" }}
-              />
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" style={{ padding: "6rem 1rem", textAlign: "center" }}>
-          <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>お問い合わせ</h2>
-          <p>ご質問などございましたらお気軽にお問い合わせください。</p>
-        </section>
-
-        <footer style={{ textAlign: "center", padding: "1rem", backgroundColor: "#000", color: "#fff" }}>
-          © {new Date().getFullYear()} Secret Beach Villa Fukutsu
-        </footer>
       </div>
     </>
   );
