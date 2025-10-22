@@ -33,7 +33,7 @@ export default function Home() {
 
   return (
     <>
-      <style jsx global>{`
+     <style jsx global>{`
   @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Serif+JP:wght@400;500&display=swap");
 
   html, body, #__next {
