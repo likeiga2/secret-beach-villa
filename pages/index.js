@@ -8,7 +8,6 @@ export default function Home() {
   const heroRef = useRef(null);
   const [fadeSections, setFadeSections] = useState([]);
 
-  // 背景画像切り替え
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -16,7 +15,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // フェードイン（下層セクション）
   useEffect(() => {
     const handleScroll = () => {
       const sectionEls = document.querySelectorAll(".fade-section");
@@ -49,7 +47,7 @@ export default function Home() {
 
         a { text-decoration: none; color: inherit; }
 
-        /* ========= Hero Section ========= */
+        /* ===== Hero ===== */
         .hero-wrapper {
           margin: 24px auto;
           max-width: calc(100% - 48px);
@@ -83,11 +81,24 @@ export default function Home() {
           opacity: 0;
           transform: scale(1.15);
         }
+
         @keyframes zoomOutHero {
           0% { transform: scale(1.15); }
           100% { transform: scale(1); }
         }
 
+        /* ===== Overlay gradient ===== */
+        .hero-gradient {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 200px;
+          background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(240,235,220,0.65));
+          z-index: 5;
+        }
+
+        /* ===== Hero Content ===== */
         .hero-content {
           position: relative;
           padding-top: 60vh;
@@ -105,17 +116,7 @@ export default function Home() {
           to { opacity: 1; transform: translateY(0); }
         }
 
-        .hero-gradient {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 250px;
-          background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(233,229,219,1));
-          z-index: 5;
-        }
-
-        /* ========= Navigation ========= */
+        /* ===== Navigation ===== */
         .hero-nav {
           position: absolute;
           top: 20px;
@@ -129,49 +130,63 @@ export default function Home() {
           font-family: 'Playfair Display', 'Noto Serif JP', serif;
           letter-spacing: 0.1em;
         }
-        .hero-nav .nav-item {
-          transition: color 0.3s ease;
-        }
         .hero-nav .nav-item:hover { color: #e6dcc6; }
-        .hero-nav .jp {
-          display: block;
-          font-size: 0.8rem;
-          margin-top: 2px;
-        }
+        .hero-nav .jp { display: block; font-size: 0.8rem; margin-top: 2px; }
 
-        /* ========= Scroll Indicator ========= */
-        .scroll-indicator {
+        /* ===== Hamburger ===== */
+        .menu-icon {
           position: absolute;
-          bottom: 20px;
+          top: 20px;
+          right: 28px;
+          width: 32px;
+          height: 22px;
+          z-index: 15;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          transition: transform 0.3s ease;
+        }
+        .menu-icon:hover { transform: scale(1.05); }
+        .bar {
+          height: 2px;
+          background: #fff;
+          border-radius: 2px;
+          transition: all 0.3s ease;
+        }
+        .menu-icon:hover .bar:nth-child(2) { width: 80%; }
+        .menu-icon:hover .bar:nth-child(3) { width: 60%; }
+
+        /* ===== Scroll Arrow ===== */
+        .scroll-arrow {
+          position: absolute;
+          bottom: 25px;
           left: 50%;
           transform: translateX(-50%);
-          color: #fff;
-          font-size: 1.4rem;
-          animation: bounce 1.6s infinite;
+          width: 26px;
+          height: 26px;
+          z-index: 10;
+          animation: arrowFloat 1.8s ease-in-out infinite;
         }
-        @keyframes bounce {
+        @keyframes arrowFloat {
           0%,100% { transform: translate(-50%, 0); opacity: 0.7; }
           50% { transform: translate(-50%, 6px); opacity: 1; }
         }
-
-        /* ========= Slide Menu ========= */
-        @keyframes slideLuxury {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeUpMenu {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+        .scroll-arrow svg {
+          width: 100%;
+          height: 100%;
+          stroke: #fff;
+          stroke-width: 1.5;
+          fill: none;
         }
 
-        /* ========= Section Fade-in ========= */
+        /* ===== Fade Section ===== */
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(40px); }
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
 
-      {/* ===== Hero ===== */}
       <div className="hero-wrapper">
         <div ref={heroRef} className="hero-scroll">
           {images.map((src, i) => (
@@ -182,20 +197,21 @@ export default function Home() {
             />
           ))}
 
-          {/* ナビゲーション */}
+          {/* 上部メニュー */}
           <nav className="hero-nav">
-            <Link href="/about">
-              <div className="nav-item">ABOUT<span className="jp">宿について</span></div>
-            </Link>
-            <Link href="/stay">
-              <div className="nav-item">STAY<span className="jp">ご宿泊</span></div>
-            </Link>
-            <Link href="/contact">
-              <div className="nav-item">CONTACT<span className="jp">お問い合わせ</span></div>
-            </Link>
+            <Link href="/about"><div className="nav-item">ABOUT<span className="jp">宿について</span></div></Link>
+            <Link href="/stay"><div className="nav-item">STAY<span className="jp">ご宿泊</span></div></Link>
+            <Link href="/contact"><div className="nav-item">CONTACT<span className="jp">お問い合わせ</span></div></Link>
           </nav>
 
-          {/* テキスト */}
+          {/* ハンバーガー */}
+          <div className="menu-icon" onClick={() => setMenuOpen(true)}>
+            <div className="bar" />
+            <div className="bar" />
+            <div className="bar" />
+          </div>
+
+          {/* Hero text */}
           <div className="hero-content">
             <h1 className="fade-text" style={{ fontSize: "3rem", marginBottom: "1rem" }}>宿 -SHUKU-</h1>
             <p className="fade-text" style={{ fontSize: "1.2rem", maxWidth: "600px", margin: "0 auto" }}>
@@ -204,25 +220,23 @@ export default function Home() {
             </p>
           </div>
 
-          {/* ダミーテキスト */}
-          <div style={{ padding: "80vh 2rem 20vh", color: "#fff", textAlign: "center" }}>
-            <p style={{ opacity: 0.85 }}>
-              ―― この下に、宿の物語や四季の写真、歴史などが並びます ――
-              <br />
-              Hero内部スクロール完了でページ本体がふわっと現れます。
-            </p>
+          {/* 下の矢印 */}
+          <div className="scroll-arrow">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
           </div>
 
+          {/* オーバーレイ */}
           <div className="hero-gradient" />
-          <div className="scroll-indicator">↓</div>
         </div>
       </div>
 
-      {/* ===== 下層セクション ===== */}
+      {/* 下層セクション */}
       {[
-        { title: "宿について", text: "当宿は、築100年の古蔵を改装した静謐な宿です。木の香りと金和紙の光がやさしく迎えます。" },
-        { title: "ご宿泊", text: "一日一組限定。全室から海と松林を望め、自然と調和した滞在をお愉しみいただけます。" },
-        { title: "お問い合わせ", text: "ご予約・ご相談はメールまたはお電話にて承っております。お気軽にご連絡ください。" },
+        { title: "宿について", text: "築100年の古蔵を改装した静謐な宿。金和紙の灯りが包み込みます。" },
+        { title: "ご宿泊", text: "一日一組限定。全室から海と松林を望め、自然と調和した滞在を。" },
+        { title: "お問い合わせ", text: "ご予約・ご相談はお気軽にご連絡ください。" },
       ].map((s, i) => (
         <section
           key={i}
