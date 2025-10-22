@@ -8,7 +8,7 @@ export default function Home() {
   const heroRef = useRef(null);
   const [fadeSections, setFadeSections] = useState([]);
 
-  // 背景画像の切り替え
+  // 背景画像切り替え
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -16,20 +16,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Hero内スクロール監視 → 下部でページスクロール開始
-  useEffect(() => {
-    const heroEl = heroRef.current;
-    const handleHeroScroll = (e) => {
-      const el = e.target;
-      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 5) {
-        window.scrollTo({ top: window.scrollY + 2, behavior: "smooth" });
-      }
-    };
-    heroEl.addEventListener("scroll", handleHeroScroll);
-    return () => heroEl.removeEventListener("scroll", handleHeroScroll);
-  }, []);
-
-  // 下層セクションのフェードイン
+  // フェードイン（下層セクション）
   useEffect(() => {
     const handleScroll = () => {
       const sectionEls = document.querySelectorAll(".fade-section");
@@ -60,43 +47,32 @@ export default function Home() {
           scroll-behavior: smooth;
         }
 
-        a {
-          text-decoration: none !important;
-          color: inherit !important;
-        }
+        a { text-decoration: none; color: inherit; }
 
-        /* ===============================
-           Hero内部スクロール＋ズーム切替
-           =============================== */
-        .hero-section {
-          position: relative;
+        /* ========= Hero Section ========= */
+        .hero-wrapper {
+          margin: 24px auto;
+          max-width: calc(100% - 48px);
+          height: calc(100vh - 48px);
           border-radius: 16px;
           overflow: hidden;
-          margin: 0 auto;
-          box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-          background-color: transparent;
-          perspective: 1000px;
-          height: 100vh;
+          position: relative;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
         }
 
-        .hero-scroll-container {
-          position: relative;
+        .hero-scroll {
           height: 160vh;
           overflow-y: scroll;
-          scroll-snap-type: y mandatory;
           scrollbar-width: none;
         }
-        .hero-scroll-container::-webkit-scrollbar {
-          display: none;
-        }
+        .hero-scroll::-webkit-scrollbar { display: none; }
 
         .hero-image {
           position: absolute;
           inset: 0;
           background-size: cover;
           background-position: center;
-          transition: opacity 1.2s ease-in-out, transform 6s ease-in-out;
-          will-change: transform, opacity;
+          transition: opacity 1.5s ease-in-out, transform 6s ease-in-out;
         }
         .hero-image.active {
           opacity: 1;
@@ -107,22 +83,63 @@ export default function Home() {
           opacity: 0;
           transform: scale(1.15);
         }
-
         @keyframes zoomOutHero {
           0% { transform: scale(1.15); }
           100% { transform: scale(1); }
         }
 
-        .hero-text {
-          position: sticky;
-          top: 40%;
-          text-align: center;
+        .hero-content {
+          position: relative;
+          padding-top: 60vh;
           color: #fff;
-          z-index: 3;
-          text-shadow: 0 3px 10px rgba(0,0,0,0.6);
-          font-family: 'Playfair Display', 'Noto Serif JP', serif;
+          text-align: center;
+          font-family: 'Noto Serif JP', serif;
+        }
+        .fade-text {
+          opacity: 0;
+          transform: translateY(30px);
+          animation: fadeInUp 1.2s ease forwards;
+          animation-delay: 0.4s;
+        }
+        @keyframes fadeInUp {
+          to { opacity: 1; transform: translateY(0); }
         }
 
+        .hero-gradient {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 250px;
+          background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(233,229,219,1));
+          z-index: 5;
+        }
+
+        /* ========= Navigation ========= */
+        .hero-nav {
+          position: absolute;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 3rem;
+          z-index: 10;
+          color: #fff;
+          text-align: center;
+          font-family: 'Playfair Display', 'Noto Serif JP', serif;
+          letter-spacing: 0.1em;
+        }
+        .hero-nav .nav-item {
+          transition: color 0.3s ease;
+        }
+        .hero-nav .nav-item:hover { color: #e6dcc6; }
+        .hero-nav .jp {
+          display: block;
+          font-size: 0.8rem;
+          margin-top: 2px;
+        }
+
+        /* ========= Scroll Indicator ========= */
         .scroll-indicator {
           position: absolute;
           bottom: 20px;
@@ -131,22 +148,13 @@ export default function Home() {
           color: #fff;
           font-size: 1.4rem;
           animation: bounce 1.6s infinite;
-          opacity: 0.9;
         }
         @keyframes bounce {
-          0%, 100% {
-            transform: translate(-50%, 0);
-            opacity: 0.7;
-          }
-          50% {
-            transform: translate(-50%, 6px);
-            opacity: 1;
-          }
+          0%,100% { transform: translate(-50%, 0); opacity: 0.7; }
+          50% { transform: translate(-50%, 6px); opacity: 1; }
         }
 
-        /* ===============================
-           高級スライドメニュー
-           =============================== */
+        /* ========= Slide Menu ========= */
         @keyframes slideLuxury {
           from { transform: translateX(100%); opacity: 0; }
           to { transform: translateX(0); opacity: 1; }
@@ -156,215 +164,72 @@ export default function Home() {
           to { transform: translateY(0); opacity: 1; }
         }
 
-        /* ===============================
-           下層フェードイン
-           =============================== */
+        /* ========= Section Fade-in ========= */
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(40px); }
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
 
-      {/* ================= Hero Section ================= */}
-      <section className="hero-section">
-        <div ref={heroRef} className="hero-scroll-container">
-          {images.map((src, index) => (
+      {/* ===== Hero ===== */}
+      <div className="hero-wrapper">
+        <div ref={heroRef} className="hero-scroll">
+          {images.map((src, i) => (
             <div
-              key={index}
-              className={`hero-image ${
-                currentIndex === index ? "active" : "inactive"
-              }`}
+              key={i}
+              className={`hero-image ${currentIndex === i ? "active" : "inactive"}`}
               style={{ backgroundImage: `url(${src})` }}
             />
           ))}
 
-          {/* 中央キャッチコピー */}
-          <div className="hero-text">
-            <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
-              宿 -SHUKU-
-            </h1>
-            <p style={{ fontSize: "1.2rem" }}>
-              心とからだをほどく。忍冬香る古蔵にて
+          {/* ナビゲーション */}
+          <nav className="hero-nav">
+            <Link href="/about">
+              <div className="nav-item">ABOUT<span className="jp">宿について</span></div>
+            </Link>
+            <Link href="/stay">
+              <div className="nav-item">STAY<span className="jp">ご宿泊</span></div>
+            </Link>
+            <Link href="/contact">
+              <div className="nav-item">CONTACT<span className="jp">お問い合わせ</span></div>
+            </Link>
+          </nav>
+
+          {/* テキスト */}
+          <div className="hero-content">
+            <h1 className="fade-text" style={{ fontSize: "3rem", marginBottom: "1rem" }}>宿 -SHUKU-</h1>
+            <p className="fade-text" style={{ fontSize: "1.2rem", maxWidth: "600px", margin: "0 auto" }}>
+              心とからだをほどく。忍冬香る古蔵にて。
+              <br />静けさの中に佇む時間をお愉しみください。
             </p>
           </div>
 
-          {/* ナビゲーション */}
-          <nav
-            style={{
-              position: "absolute",
-              top: "20px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              zIndex: 3,
-              display: "flex",
-              gap: "3rem",
-              alignItems: "center",
-              color: "#fff",
-              fontFamily: "'Playfair Display', serif",
-              letterSpacing: "0.1em",
-            }}
-          >
-            <Link href="/about">ABOUT</Link>
-            <Link href="/stay">STAY</Link>
-            <Link href="/contact">CONTACT</Link>
-          </nav>
-
-          {/* ハンバーガーメニュー */}
-          <div
-            onClick={() => setMenuOpen(true)}
-            style={{
-              position: "absolute",
-              top: "20px",
-              right: "20px",
-              width: "30px",
-              height: "22px",
-              cursor: "pointer",
-              zIndex: 4,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ height: "2px", backgroundColor: "#fff" }} />
-            <span style={{ height: "2px", backgroundColor: "#fff" }} />
-            <span style={{ height: "2px", backgroundColor: "#fff" }} />
+          {/* ダミーテキスト */}
+          <div style={{ padding: "80vh 2rem 20vh", color: "#fff", textAlign: "center" }}>
+            <p style={{ opacity: 0.85 }}>
+              ―― この下に、宿の物語や四季の写真、歴史などが並びます ――
+              <br />
+              Hero内部スクロール完了でページ本体がふわっと現れます。
+            </p>
           </div>
 
-          {/* 下矢印 */}
+          <div className="hero-gradient" />
           <div className="scroll-indicator">↓</div>
-
-          {/* 高級スライドメニュー */}
-          {menuOpen && (
-            <>
-              <div
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  backdropFilter: "blur(8px)",
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  zIndex: 10,
-                }}
-              />
-              <div
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  right: 0,
-                  width: "60%",
-                  maxWidth: "420px",
-                  height: "100%",
-                  background: "rgba(10,10,10,0.95)",
-                  color: "#fdfaf5",
-                  zIndex: 11,
-                  animation: "slideLuxury 0.6s ease forwards",
-                  boxShadow: "-4px 0 30px rgba(0,0,0,0.5)",
-                  padding: "5rem 3rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <div
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    position: "absolute",
-                    top: "20px",
-                    right: "20px",
-                    width: "26px",
-                    height: "26px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: 0,
-                      width: "100%",
-                      height: "2px",
-                      backgroundColor: "#e6dcc6",
-                      transform: "rotate(45deg)",
-                    }}
-                  />
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: 0,
-                      width: "100%",
-                      height: "2px",
-                      backgroundColor: "#e6dcc6",
-                      transform: "rotate(-45deg)",
-                    }}
-                  />
-                </div>
-
-                {[
-                  { en: "ABOUT", jp: "宿について", link: "/about" },
-                  { en: "STAY", jp: "ご宿泊", link: "/stay" },
-                  { en: "CONTACT", jp: "お問い合わせ", link: "/contact" },
-                ].map((item, i) => (
-                  <Link key={i} href={item.link}>
-                    <div
-                      style={{
-                        opacity: 0,
-                        animation: `fadeUpMenu 0.6s ease ${0.2 + i * 0.15}s forwards`,
-                        margin: "1.8rem 0",
-                        letterSpacing: "0.15em",
-                        fontFamily:
-                          "'Cormorant Garamond', 'Noto Serif JP', serif",
-                        textTransform: "uppercase",
-                        fontSize: "2rem",
-                        color: "#fdfaf5",
-                        cursor: "pointer",
-                        transition: "color 0.4s ease",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.color = "#e6dcc6")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.color = "#fdfaf5")
-                      }
-                    >
-                      {item.en}
-                      <span
-                        style={{
-                          display: "block",
-                          fontSize: "0.9rem",
-                          color: "#d8d3c4",
-                          letterSpacing: "0.05em",
-                        }}
-                      >
-                        {item.jp}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </>
-          )}
         </div>
-      </section>
+      </div>
 
-      {/* ================= 下層セクション ================= */}
+      {/* ===== 下層セクション ===== */}
       {[
-        { title: "宿について", text: "古民家をリノベーションし..." },
-        { title: "ご宿泊", text: "チェックイン日とチェックアウト日..." },
-        { title: "お問い合わせ", text: "ご質問・ご相談などお気軽に..." },
+        { title: "宿について", text: "当宿は、築100年の古蔵を改装した静謐な宿です。木の香りと金和紙の光がやさしく迎えます。" },
+        { title: "ご宿泊", text: "一日一組限定。全室から海と松林を望め、自然と調和した滞在をお愉しみいただけます。" },
+        { title: "お問い合わせ", text: "ご予約・ご相談はメールまたはお電話にて承っております。お気軽にご連絡ください。" },
       ].map((s, i) => (
         <section
           key={i}
           className="fade-section"
           style={{
             opacity: fadeSections.includes(i) ? 1 : 0,
-            animation: fadeSections.includes(i)
-              ? "fadeUp 1.2s ease forwards"
-              : "none",
+            animation: fadeSections.includes(i) ? "fadeUp 1.2s ease forwards" : "none",
             padding: "6rem 1rem",
             maxWidth: "800px",
             margin: "0 auto",
@@ -377,14 +242,7 @@ export default function Home() {
         </section>
       ))}
 
-      <footer
-        style={{
-          textAlign: "center",
-          padding: "1rem",
-          backgroundColor: "#000",
-          color: "#fff",
-        }}
-      >
+      <footer style={{ textAlign: "center", padding: "1rem", backgroundColor: "#000", color: "#fff" }}>
         © {new Date().getFullYear()} Secret Beach Villa Fukutsu
       </footer>
     </>
