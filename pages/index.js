@@ -93,93 +93,111 @@ export default function Home() {
           opacity: 0.8;
         }
 
-        /* --- Hamburger --- */
-        .hamburger {
-          position: absolute;
-          top: 26px;
-          right: 28px;
-          width: 28px;
-          height: 20px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          cursor: pointer;
-          z-index: 6;
-        }
-        .hamburger span {
-          display: block;
-          height: 2px;
-          background: #fff;
-          border-radius: 2px;
-          transition: all 0.4s ease;
-        }
-        .hamburger:hover span:nth-child(1) {
-          transform: translateY(-2px);
-        }
-        .hamburger:hover span:nth-child(3) {
-          transform: translateY(2px);
-        }
-        .hamburger.open span:nth-child(1) {
-          transform: rotate(45deg) translateY(8px);
-        }
-        .hamburger.open span:nth-child(2) {
-          opacity: 0;
-        }
-        .hamburger.open span:nth-child(3) {
-          transform: rotate(-45deg) translateY(-8px);
-        }
+      /* --- Hamburger --- */
+.hamburger {
+  position: absolute;
+  top: 26px;
+  right: 28px;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 6;
+  transition: transform 0.3s ease;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* hover時に呼吸するような動き */
+.hamburger:hover span:nth-child(1) {
+  transform: translateY(-3px);
+}
+.hamburger:hover span:nth-child(3) {
+  transform: translateY(3px);
+}
+
+/* open時（クリックで×へ） */
+.hamburger.open {
+  transform: rotate(0deg);
+}
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translateY(9px);
+}
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-9px);
+}
+
 
         /* --- Slide Menu --- */
-        .slide-menu {
-          position: fixed;
-          top: 0;
-          right: 0;
-          height: 100%;
-          width: 60%;
-          max-width: 420px;
-          background-image: url("/washi_gold.jpg");
-          background-size: cover;
-          background-position: center;
-          transform: translateX(100%);
-          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          z-index: 20;
-          padding: 4rem 2rem;
-        }
-        .slide-menu.open {
-          transform: translateX(0);
-        }
-        .slide-menu a {
-          display: block;
-          margin: 1.8rem 0;
-          font-family: "Playfair Display", serif;
-          font-size: 1.4rem;
-          color: #222;
-          text-decoration: none;
-        }
-        .slide-menu a span {
-          display: block;
-          font-family: "Noto Serif JP", serif;
-          font-size: 0.9rem;
-        }
+.slide-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 60%;
+  max-width: 420px;
+  background-image: url("/washi_gold.jpg");
+  background-size: cover;
+  background-position: center;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  z-index: 20;
+  padding: 4rem 2rem;
+}
+.slide-menu.open {
+  transform: translateX(0);
+  opacity: 1;
+}
+.slide-menu a {
+  display: block;
+  margin: 1.8rem 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  color: #222;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 0.5s ease;
+}
+.slide-menu.open a {
+  opacity: 1;
+  transform: translateX(0);
+}
+.slide-menu a:nth-child(1) { transition-delay: 0.1s; }
+.slide-menu a:nth-child(2) { transition-delay: 0.2s; }
+.slide-menu a:nth-child(3) { transition-delay: 0.3s; }
 
-        /* Overlay */
-        .menu-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          backdrop-filter: blur(6px);
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 10;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          pointer-events: none;
-        }
-        .menu-overlay.open {
-          opacity: 1;
-          pointer-events: auto;
-        }
+/* Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.menu-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 
         /* --- Scroll indicator --- */
         .scroll-indicator {
