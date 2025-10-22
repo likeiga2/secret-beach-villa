@@ -47,7 +47,7 @@ export default function Home() {
 
         a { text-decoration: none; color: inherit; }
 
-        /* ===== Hero ===== */
+        /* ===== Hero Section ===== */
         .hero-wrapper {
           margin: 24px auto;
           max-width: calc(100% - 48px);
@@ -85,17 +85,6 @@ export default function Home() {
         @keyframes zoomOutHero {
           0% { transform: scale(1.15); }
           100% { transform: scale(1); }
-        }
-
-        /* ===== Overlay gradient ===== */
-        .hero-gradient {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 200px;
-          background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(240,235,220,0.65));
-          z-index: 5;
         }
 
         /* ===== Hero Content ===== */
@@ -157,27 +146,43 @@ export default function Home() {
         .menu-icon:hover .bar:nth-child(2) { width: 80%; }
         .menu-icon:hover .bar:nth-child(3) { width: 60%; }
 
-        /* ===== Scroll Arrow ===== */
-        .scroll-arrow {
+        /* ===== Scroll Indicator ===== */
+        .scroll-indicator {
           position: absolute;
-          bottom: 25px;
+          bottom: 80px;
           left: 50%;
           transform: translateX(-50%);
-          width: 26px;
-          height: 26px;
-          z-index: 10;
-          animation: arrowFloat 1.8s ease-in-out infinite;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+          color: #fff;
+          z-index: 15;
+          animation: fadeIn 2s ease forwards;
         }
-        @keyframes arrowFloat {
-          0%,100% { transform: translate(-50%, 0); opacity: 0.7; }
-          50% { transform: translate(-50%, 6px); opacity: 1; }
+        .scroll-text {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.1rem;
+          letter-spacing: 0.1em;
+          text-transform: lowercase;
+          opacity: 0.9;
         }
-        .scroll-arrow svg {
-          width: 100%;
-          height: 100%;
+        .scroll-icon {
+          width: 22px;
+          height: 22px;
           stroke: #fff;
           stroke-width: 1.5;
           fill: none;
+          animation: arrowFloat 1.8s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes arrowFloat {
+          0%, 100% { transform: translateY(0); opacity: 0.7; }
+          50% { transform: translateY(6px); opacity: 1; }
         }
 
         /* ===== Fade Section ===== */
@@ -220,15 +225,13 @@ export default function Home() {
             </p>
           </div>
 
-          {/* 下の矢印 */}
-          <div className="scroll-arrow">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 5v14M5 12l7 7 7-7" />
+          {/* scroll */}
+          <div className="scroll-indicator">
+            <p className="scroll-text">scroll</p>
+            <svg viewBox="0 0 24 24" className="scroll-icon">
+              <path d="M4 9l8 8 8-8" />
             </svg>
           </div>
-
-          {/* オーバーレイ */}
-          <div className="hero-gradient" />
         </div>
       </div>
 
