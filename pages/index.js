@@ -5,7 +5,7 @@ export default function Home() {
 
   return (
     <div style={{ fontFamily: 'sans-serif' }}>
-      <section style={{ position: 'relative', minHeight: '100vh', backgroundImage: "url('/bg_test.jpg')", backgroundSize: 'cover', color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <section style={{ position: 'relative', minHeight: '100vh', backgroundImage: "url('/IMG_5949.jpeg')", backgroundSize: 'cover', color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <h1 style={{ fontSize: '4rem', marginBottom: '1rem' }}>Secret Beach Villa Fukutsu</h1>
         <p style={{ fontSize: '1.2rem', marginBottom: '2rem', textShadow: '0 1px 3px rgba(0,0,0,.5)' }}>和モダンの静かな宿泊施設で心休まるひとときを。</p>
         <button style={{ padding: '0.75rem 1.5rem', backgroundColor: '#ffffffaa', color: '#000', borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }} onClick={() => document.getElementById('booking').scrollIntoView({ behavior: 'smooth' })}>予約する</button>
