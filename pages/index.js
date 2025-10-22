@@ -25,7 +25,7 @@ export default function Home() {
       <section
         style={{
           position: "relative",
-          height: "100vh", // アスペクト比 shuku-kokon準拠
+          height: "100vh",
           width: "100%",
           overflow: "hidden",
           display: "flex",
@@ -34,7 +34,7 @@ export default function Home() {
           color: "#fff",
         }}
       >
-        {/* 背景画像 */}
+        {/* Background images with crossfade */}
         {images.map((src, index) => (
           <div
             key={index}
@@ -58,20 +58,52 @@ export default function Home() {
         <div
           style={{
             position: "absolute",
-            top: "30px",
-            right: "40px",
+            top: "20px",
+            right: "20px",
             zIndex: 3,
             cursor: "pointer",
-            fontSize: "2rem",
-            color: "#fff",
-            userSelect: "none",
+            width: "32px",
+            height: "24px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
           }}
           onClick={() => setMenuOpen(true)}
         >
-          &#9776;
+          {/* burger/cross lines */}
+          <span
+            style={{
+              display: "block",
+              height: "2px",
+              width: "100%",
+              backgroundColor: "#fff",
+              transition: "all 0.3s ease",
+              transform: menuOpen ? "rotate(45deg) translateY(10px)" : "none",
+            }}
+          />
+          <span
+            style={{
+              display: "block",
+              height: "2px",
+              width: "100%",
+              backgroundColor: "#fff",
+              transition: "opacity 0.3s ease",
+              opacity: menuOpen ? 0 : 1,
+            }}
+          />
+          <span
+            style={{
+              display: "block",
+              height: "2px",
+              width: "100%",
+              backgroundColor: "#fff",
+              transition: "all 0.3s ease",
+              transform: menuOpen ? "rotate(-45deg) translateY(-10px)" : "none",
+            }}
+          />
         </div>
 
-        {/* Hero Text */}
+        {/* Hero text */}
         <div
           style={{
             position: "relative",
@@ -108,7 +140,7 @@ export default function Home() {
               cursor: "pointer",
             }}
             onClick={() =>
-              document.getElementById("booking").scrollIntoView({
+              document.getElementById("booking")?.scrollIntoView({
                 behavior: "smooth",
               })
             }
@@ -117,9 +149,10 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Menu Overlay */}
+        {/* Sliding Menu Overlay */}
         {menuOpen && (
           <>
+            {/* backdrop */}
             <div
               onClick={() => setMenuOpen(false)}
               style={{
@@ -128,41 +161,68 @@ export default function Home() {
                 left: 0,
                 width: "100%",
                 height: "100%",
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(0,0,0,0.6)",
+                backdropFilter: "blur(6px)",
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
                 zIndex: 10,
               }}
             ></div>
 
+            {/* panel */}
             <div
               style={{
                 position: "fixed",
                 top: 0,
                 right: 0,
-                width: "100%",
+                width: "60%",
+                maxWidth: "480px",
                 height: "100%",
-                backgroundColor: "rgba(0,0,0,0.85)",
+                backgroundColor: "rgba(255,255,255,0.9)",
+                color: "#000",
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
                 justifyContent: "center",
+                padding: "2rem",
                 zIndex: 11,
-                animation: "fadeIn 0.3s ease-in-out",
+                transform: menuOpen ? "translateX(0%)" : "translateX(100%)",
+                transition: "transform 0.4s ease-in-out",
               }}
             >
+              {/* close button inside panel */}
               <div
                 onClick={() => setMenuOpen(false)}
                 style={{
                   position: "absolute",
-                  top: "30px",
-                  right: "40px",
-                  fontSize: "2rem",
+                  top: "20px",
+                  right: "20px",
+                  width: "24px",
+                  height: "24px",
                   cursor: "pointer",
-                  color: "#fff",
                 }}
               >
-                ×
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: 0,
+                    width: "100%",
+                    height: "2px",
+                    backgroundColor: "#000",
+                    transform: "rotate(45deg)",
+                  }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: 0,
+                    width: "100%",
+                    height: "2px",
+                    backgroundColor: "#000",
+                    transform: "rotate(-45deg)",
+                  }}
+                />
               </div>
+              {/* menu items */}
               {[
                 { label: "施設紹介", id: "about" },
                 { label: "ご予約", id: "booking" },
@@ -173,14 +233,11 @@ export default function Home() {
                   href={`#${item.id}`}
                   onClick={() => setMenuOpen(false)}
                   style={{
-                    color: "#fff",
+                    color: "#000",
                     textDecoration: "none",
                     fontSize: "1.8rem",
                     margin: "1rem 0",
-                    transition: "opacity 0.3s",
                   }}
-                  onMouseEnter={(e) => (e.target.style.opacity = 0.7)}
-                  onMouseLeave={(e) => (e.target.style.opacity = 1)}
                 >
                   {item.label}
                 </a>
@@ -251,13 +308,6 @@ export default function Home() {
       >
         © {new Date().getFullYear()} Secret Beach Villa Fukutsu
       </footer>
-
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }
