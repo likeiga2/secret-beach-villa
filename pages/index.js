@@ -188,4 +188,9 @@ export default function Home() {
               <br />
               この構成がVercelで安定して動作します。
             </p>
-          </
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
