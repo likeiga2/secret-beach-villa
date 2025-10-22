@@ -364,23 +364,25 @@ export default function Home() {
             </p>
           </div>
         </div>
-          {/* --- Scroll confirmation section --- */}
-<div
-  style={{
-    height: "150vh",
-    background: "rgba(255,255,255,0.7)",
-    backdropFilter: "blur(8px)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontFamily: "Noto Serif JP, serif",
-    color: "#222",
-  }}
->
-  <h2>Page scroll confirmed ✅</h2>
-</div>
+        </div> {/* closes hero-container */}
 
-      </div>
+        {/* --- Scroll confirmation section --- */}
+        <div
+          style={{
+            height: "150vh",
+            background: "rgba(255,255,255,0.7)",
+            backdropFilter: "blur(8px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "Noto Serif JP, serif",
+            color: "#222",
+          }}
+        >
+          <h2>Page scroll confirmed ✅</h2>
+        </div>
+
+      </div> {/* closes hero-wrapper */}
     </>
   );
 }
