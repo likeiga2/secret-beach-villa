@@ -5,6 +5,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // 背景画像のスライドショー
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -21,7 +22,7 @@ export default function Home() {
         overflowX: "hidden",
       }}
     >
-      {/* Hero Section */}
+      {/* ヒーローセクション */}
       <section
         style={{
           position: "relative",
@@ -34,7 +35,7 @@ export default function Home() {
           color: "#fff",
         }}
       >
-        {/* Background images with crossfade */}
+        {/* クロスフェードする背景画像 */}
         {images.map((src, index) => (
           <div
             key={index}
@@ -54,7 +55,7 @@ export default function Home() {
           />
         ))}
 
-        {/* Menu button */}
+        {/* ハンバーガーメニューアイコン */}
         <div
           style={{
             position: "absolute",
@@ -70,7 +71,7 @@ export default function Home() {
           }}
           onClick={() => setMenuOpen(true)}
         >
-          {/* burger/cross lines */}
+          {/* 3 本線が × に変形するアニメーション */}
           <span
             style={{
               display: "block",
@@ -103,7 +104,7 @@ export default function Home() {
           />
         </div>
 
-        {/* Hero text */}
+        {/* メインキャッチコピー */}
         <div
           style={{
             position: "relative",
@@ -149,10 +150,10 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Sliding Menu Overlay */}
+        {/* 右からスライドインするメニューパネルと背景ブラー */}
         {menuOpen && (
           <>
-            {/* backdrop */}
+            {/* ブラー効果をつけた背景 */}
             <div
               onClick={() => setMenuOpen(false)}
               style={{
@@ -167,7 +168,7 @@ export default function Home() {
               }}
             ></div>
 
-            {/* panel */}
+            {/* スライドインパネル */}
             <div
               style={{
                 position: "fixed",
@@ -187,7 +188,7 @@ export default function Home() {
                 transition: "transform 0.4s ease-in-out",
               }}
             >
-              {/* close button inside panel */}
+              {/* パネル内の閉じるボタン */}
               <div
                 onClick={() => setMenuOpen(false)}
                 style={{
@@ -222,7 +223,8 @@ export default function Home() {
                   }}
                 />
               </div>
-              {/* menu items */}
+
+              {/* メニューリンク */}
               {[
                 { label: "施設紹介", id: "about" },
                 { label: "ご予約", id: "booking" },
@@ -247,7 +249,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* About Section */}
+      {/* 以下各セクションはそのまま */}
       <section
         id="about"
         style={{
@@ -264,7 +266,6 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Booking Section */}
       <section
         id="booking"
         style={{
@@ -285,7 +286,6 @@ export default function Home() {
         />
       </section>
 
-      {/* Contact Section */}
       <section
         id="contact"
         style={{
@@ -297,7 +297,6 @@ export default function Home() {
         <p>ご質問がありましたらお気軽にお問い合わせください。</p>
       </section>
 
-      {/* Footer */}
       <footer
         style={{
           textAlign: "center",
