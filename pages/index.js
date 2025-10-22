@@ -380,8 +380,7 @@ export default function Home() {
           }}
         >
           <h2>Page scroll confirmed ✅</h2>
-        </div>
-
+        
       </div> {/* closes hero-wrapper */}
     </>
   );
