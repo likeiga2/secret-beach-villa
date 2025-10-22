@@ -48,15 +48,17 @@ export default function Home() {
   }
 
   /* --- HERO --- */
-  .hero-wrapper {
-    margin: 1.5rem auto;
-    width: calc(100% - 3rem);
-    height: calc(100vh - 3rem);
-    border-radius: 18px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  }
+ .hero-wrapper {
+  margin: 1.5rem auto;
+  width: calc(100% - 3rem);
+  height: calc(100vh - 3rem);
+  border-radius: 18px;
+  overflow-y: auto;      /* ✅ allow internal scrolling */
+  overflow-x: hidden;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  scroll-behavior: smooth;
+}
 
   .hero-image {
     position: absolute;
@@ -175,6 +177,63 @@ export default function Home() {
     font-size: 0.85rem;
     color: #6a5d37;
   }
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 19;               /* ✅ below slide-menu (z=20) */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.menu-overlay.open {
+  opacity: 1;
+  pointer-events: auto;      /* ✅ catch clicks to close menu */
+}
+
+/* --- Slide Menu Close Button --- */
+.slide-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slide-close::before,
+.slide-close::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background-color: #2b2b2b;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+}
+
+.slide-close::before {
+  transform: rotate(45deg);
+}
+.slide-close::after {
+  transform: rotate(-45deg);
+}
+
+.slide-close:hover {
+  transform: scale(1.1);
+}
+.slide-close:hover::before,
+.slide-close:hover::after {
+  background-color: #6a5d37; /* subtle gold hover */
+}
 
   /* --- Scroll Indicator --- */
   .scroll-indicator {
@@ -293,6 +352,7 @@ export default function Home() {
           onClick={() => setMenuOpen(false)}
         />
         <div className={`slide-menu ${menuOpen ? "open" : ""}`}>
+            <div className="slide-close" onClick={() => setMenuOpen(false)} />
           <Link href="/about">
             About<span>宿について</span>
           </Link>
