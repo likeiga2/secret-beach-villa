@@ -80,7 +80,7 @@ export default function Home() {
           background-position: center;
           background-repeat: no-repeat;
           background-image: var(--hero-image);
-          transform: scale(1.03);
+          transform: scale(1.02);
           transition: transform 10s ease-out, opacity 1s ease-in-out;
           opacity: 1;
         }
@@ -89,7 +89,6 @@ export default function Home() {
           opacity: 1;
         }
 
-        /* overlay for text contrast */
         .hero-overlay {
           position: fixed;
           top: 1.5rem;
@@ -114,33 +113,34 @@ export default function Home() {
           transform: translateX(-50%);
           display: flex;
           gap: 3rem;
-          color: #f6f4ed;
-          font-family: "Cormorant Garamond", serif;
-          font-size: 1rem;
-          letter-spacing: 0.08em;
           z-index: 5;
         }
         .nav-item {
           text-align: center;
           cursor: pointer;
+          color: #f6f4ed;
+          font-family: "Cormorant Garamond", serif;
+          font-size: 1.1rem;
+          letter-spacing: 0.07em;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
           transition: opacity 0.3s ease;
         }
         .nav-item:hover {
           opacity: 0.75;
-        }
-        .nav-item {
-          color: #f6f4ed;
-          font-size: 1.1rem;
-          letter-spacing: 0.07em;
-          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
         .nav-item span {
           display: block;
           margin-top: 0.2rem;
           font-family: "Noto Serif JP", serif;
           font-size: 0.8rem;
-          color: #d6c68a; /* same gold tone */
+          color: #d6c68a;
           letter-spacing: 0.04em;
+        }
+
+        /* remove link underline */
+        .nav-menu a {
+          text-decoration: none !important;
+          border: none !important;
         }
 
         /* --- Hamburger --- */
@@ -162,12 +162,6 @@ export default function Home() {
           background: #f6f4ed;
           border-radius: 2px;
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hamburger:hover span:nth-child(1) {
-          transform: translateY(-3px);
-        }
-        .hamburger:hover span:nth-child(3) {
-          transform: translateY(3px);
         }
         .hamburger.open span:nth-child(1) {
           transform: rotate(45deg) translateY(9px);
@@ -201,7 +195,6 @@ export default function Home() {
           transform: translateX(0);
           opacity: 1;
         }
-
         .slide-menu a {
           display: block;
           margin: 2rem 0;
@@ -209,14 +202,7 @@ export default function Home() {
           font-size: 1.6rem;
           color: #2b2b2b;
           text-decoration: none;
-          opacity: 0;
-          transform: translateX(40px);
-          transition: all 0.5s ease;
           text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
-        }
-        .slide-menu.open a {
-          opacity: 1;
-          transform: translateX(0);
         }
         .slide-menu a span {
           display: block;
@@ -225,7 +211,6 @@ export default function Home() {
           color: #6a5d37;
         }
 
-        /* --- Close Button --- */
         .slide-close {
           position: absolute;
           top: 24px;
@@ -234,10 +219,6 @@ export default function Home() {
           height: 32px;
           cursor: pointer;
           z-index: 25;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: transform 0.3s ease, opacity 0.3s ease;
         }
         .slide-close::before,
         .slide-close::after {
@@ -247,7 +228,6 @@ export default function Home() {
           height: 2px;
           background-color: #2b2b2b;
           border-radius: 2px;
-          transition: background-color 0.3s ease;
         }
         .slide-close::before {
           transform: rotate(45deg);
@@ -255,53 +235,8 @@ export default function Home() {
         .slide-close::after {
           transform: rotate(-45deg);
         }
-        .slide-close:hover {
-          transform: scale(1.1);
-        }
-        .slide-close:hover::before,
-        .slide-close:hover::after {
-          background-color: #6a5d37;
-        }
 
-        /* --- Scroll Indicator --- */
-        .scroll-indicator {
-          position: absolute;
-          bottom: 60px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-          z-index: 3;
-        }
-        .scroll-text {
-          font-family: "Cormorant Garamond", serif;
-          font-size: 1rem;
-          color: #f4e7b7;
-          letter-spacing: 0.1em;
-        }
-        .scroll-icon {
-          width: 26px;
-          height: 26px;
-          stroke: #f4e7b7;
-          stroke-width: 1.5;
-          fill: none;
-          animation: arrowFloat 2s ease-in-out infinite;
-        }
-        @keyframes arrowFloat {
-          0%,
-          100% {
-            transform: translateY(0);
-            opacity: 0.6;
-          }
-          50% {
-            transform: translateY(8px);
-            opacity: 1;
-          }
-        }
-
-        /* --- Hero container (scroll inside hero) --- */
+        /* --- Hero container --- */
         .hero-container {
           position: relative;
           z-index: 2;
@@ -312,7 +247,6 @@ export default function Home() {
         .hero-container::-webkit-scrollbar {
           display: none;
         }
-
         .hero-content {
           color: #fff;
           text-align: center;
@@ -348,12 +282,12 @@ export default function Home() {
 
       <div className="hero-wrapper">
         <div
-          className={`hero-bg ${currentIndex === 0 ? "active" : ""}`}
+          className={`hero-bg active`}
           style={{ "--hero-image": `url(${images[currentIndex]})` }}
         ></div>
         <div className="hero-overlay" />
 
-        {/* --- Top menu --- */}
+        {/* Top menu */}
         <nav className="nav-menu">
           <Link href="/about">
             <div className="nav-item">
@@ -372,7 +306,7 @@ export default function Home() {
           </Link>
         </nav>
 
-        {/* --- Hamburger --- */}
+        {/* Hamburger */}
         <div
           className={`hamburger ${menuOpen ? "open" : ""}`}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -382,11 +316,7 @@ export default function Home() {
           <span></span>
         </div>
 
-        {/* --- Slide menu --- */}
-        <div
-          className={`menu-overlay ${menuOpen ? "open" : ""}`}
-          onClick={() => setMenuOpen(false)}
-        />
+        {/* Slide menu */}
         <div className={`slide-menu ${menuOpen ? "open" : ""}`}>
           <div className="slide-close" onClick={() => setMenuOpen(false)} />
           <Link href="/about">
@@ -400,7 +330,7 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* --- Hero content --- */}
+        {/* Hero text content */}
         <div className="hero-container" ref={heroRef}>
           <div className="hero-content">
             <h1 className="title">宿 -SHUKU-</h1>
@@ -409,13 +339,6 @@ export default function Home() {
               <br />
               静けさの中に佇む時間をお愉しみください。
             </p>
-          </div>
-
-          <div className="scroll-indicator">
-            <p className="scroll-text">scroll</p>
-            <svg viewBox="0 0 24 24" className="scroll-icon">
-              <path d="M4 9l8 8 8-8" />
-            </svg>
           </div>
 
           <div className="dummy-section">
@@ -429,7 +352,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* --- Page content --- */}
+      {/* Page content */}
       <div
         style={{
           height: "150vh",
