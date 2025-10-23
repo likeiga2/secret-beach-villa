@@ -57,16 +57,6 @@ export default function Home() {
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
         }
 
-        /* --- BLUR WHEN MENU OPEN --- */
-        .hero-blur-layer {
-          position: absolute;
-          inset: 0;
-          backdrop-filter: ${menuOpen ? "blur(10px) brightness(0.8)" : "none"};
-          transition: backdrop-filter 0.5s ease;
-          z-index: 10;
-          pointer-events: none;
-        }
-
         /* --- HERO BACKGROUND --- */
         .hero-bg {
           position: absolute;
@@ -76,28 +66,31 @@ export default function Home() {
           z-index: 0;
         }
 
-        /* --- CROSSFADE + ZOOM --- */
+        /* --- HERO IMAGE TRANSITIONS --- */
         .hero-bg img {
           position: absolute;
           width: 100%;
           height: 100%;
           object-fit: cover;
           opacity: 0;
-          transform: scale(1.12);
-          transition: opacity 2s ease-in-out;
-          animation: none;
+          transform: scale(1.18);
+          transition:
+            opacity 1.8s ease-in-out,
+            transform 6s cubic-bezier(0.4, 0, 0.2, 1);
+          will-change: transform, opacity;
           z-index: 0;
         }
 
         .hero-bg img.active {
           opacity: 1;
-          animation: zoomOut 8s ease-in-out forwards;
+          transform: scale(1);
           z-index: 1;
+          animation: zoomOut 8s ease-out forwards;
         }
 
         @keyframes zoomOut {
           0% {
-            transform: scale(1.12);
+            transform: scale(1.18);
           }
           100% {
             transform: scale(1);
@@ -116,6 +109,32 @@ export default function Home() {
             rgba(0, 0, 0, 0.45) 100%
           );
           z-index: 2;
+        }
+
+        /* --- LOGO --- */
+        .hero-logo {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 260px;
+          height: auto;
+          opacity: 0.9;
+          filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
+          transition: transform 2s ease-in-out, opacity 2s ease-in-out;
+          animation: logoFadeIn 3s ease-out forwards;
+          z-index: 4;
+        }
+
+        @keyframes logoFadeIn {
+          from {
+            opacity: 0;
+            transform: translate(-50%, -48%) scale(0.95);
+          }
+          to {
+            opacity: 0.9;
+            transform: translate(-50%, -50%) scale(1);
+          }
         }
 
         /* --- TOP MENU --- */
@@ -165,12 +184,11 @@ export default function Home() {
           flex-direction: column;
           justify-content: space-between;
           cursor: pointer;
-          z-index: 15;
-          transition: transform 0.3s ease, filter 0.3s ease;
+          z-index: 6;
+          transition: opacity 0.3s ease;
         }
         .hamburger:hover {
-          transform: scale(1.1);
-          filter: brightness(1.4);
+          opacity: 0.7;
         }
         .hamburger span {
           height: 2px;
@@ -201,7 +219,7 @@ export default function Home() {
           opacity: 0;
           transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
             opacity 0.4s ease;
-          z-index: 30;
+          z-index: 20;
           padding: 4rem 2rem;
         }
         .slide-menu.open {
@@ -222,7 +240,6 @@ export default function Home() {
           font-size: 0.85rem;
           color: #6a5d37;
         }
-
         .slide-close {
           position: absolute;
           top: 24px;
@@ -230,7 +247,7 @@ export default function Home() {
           width: 32px;
           height: 32px;
           cursor: pointer;
-          z-index: 35;
+          z-index: 25;
         }
         .slide-close::before,
         .slide-close::after {
@@ -259,7 +276,6 @@ export default function Home() {
         .hero-container::-webkit-scrollbar {
           display: none;
         }
-
         .hero-content {
           text-align: center;
           color: #fff;
@@ -305,7 +321,9 @@ export default function Home() {
         </div>
 
         <div className="hero-overlay" />
-        <div className="hero-blur-layer" />
+
+        {/* --- ロゴ --- */}
+        <img src="/logo_fuku.png" alt="Fuku Logo" className="hero-logo" />
 
         {/* --- TOP MENU --- */}
         <nav className="nav-menu">
