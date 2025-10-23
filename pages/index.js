@@ -66,27 +66,44 @@ export default function Home() {
           z-index: 0;
         }
 
-      /* --- HERO IMAGE TRANSITIONS --- */
+/* --- HERO IMAGE TRANSITIONS (cross-fade + zoom-out) --- */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Base layer */
 .hero-bg img {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: scale(1.18);
+  transform: scale(1.15);
   transition:
-    opacity 1.8s ease-in-out,
-    transform 6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity 2.2s ease-in-out,
+    transform 7s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
-  z-index: 0;
+  pointer-events: none;
 }
 
-/* Active image: fades in and zooms out */
+/* Active image (on top) fades in and zooms out */
 .hero-bg img.active {
   opacity: 1;
   transform: scale(1);
+  z-index: 2;
+}
+
+/* Previous image (just below) remains visible shortly for true overlap */
+.hero-bg img.previous {
+  opacity: 1;
   z-index: 1;
-  animation: zoomOut 8s ease-out forwards;
+  transition: opacity 2.2s ease-in-out;
 }
 
 /* Keyframes for continuous zoom-out motion */
@@ -284,14 +301,17 @@ export default function Home() {
 
       <div className="hero-wrapper">
         <div className="hero-bg">
-          {images.map((src, i) => (
-            <img
-              key={`${i}-${currentIndex === i}`}
-              src={src}
-              alt=""
-              className={i === currentIndex ? "active" : ""}
-            />
-          ))}
+    {images.map((src, i) => {
+  const prevIndex =
+    (currentIndex - 1 + images.length) % images.length;
+  const cls =
+    i === currentIndex
+      ? "active"
+      : i === prevIndex
+      ? "previous"
+      : "";
+  return <img key={i} src={src} alt="" className={cls} />;
+})}
         </div>
 
         <div className="hero-overlay" />
