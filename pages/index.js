@@ -7,7 +7,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const heroRef = useRef(null);
 
-  // Hero image slideshow
+  // Auto image rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -15,21 +15,22 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Scroll handoff: scroll inside hero first, then continue page scroll
+  // Scroll handoff logic
   useEffect(() => {
     const hero = heroRef.current;
+    if (!hero) return;
+
     const handleScroll = () => {
-      if (!hero) return;
-      const { scrollTop, scrollHeight, clientHeight } = hero;
-      if (scrollTop + clientHeight >= scrollHeight - 5) {
+      if (hero.scrollTop + hero.clientHeight >= hero.scrollHeight - 10) {
         window.scrollTo({
           top: hero.offsetTop + hero.offsetHeight,
           behavior: "smooth",
         });
       }
     };
-    hero?.addEventListener("scroll", handleScroll);
-    return () => hero?.removeEventListener("scroll", handleScroll);
+
+    hero.addEventListener("scroll", handleScroll);
+    return () => hero.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -42,84 +43,72 @@ export default function Home() {
         #__next {
           margin: 0;
           padding: 0;
-          background-image: url("/washi_gold.jpg");
-          background-size: cover;
-          background-position: center;
-          background-attachment: fixed;
+          background: url("/washi_gold.jpg") center/cover fixed;
           overflow-x: hidden;
           scroll-behavior: smooth;
         }
 
-        /* --- HERO --- */
+        /* HERO CONTAINER */
         .hero-wrapper {
-          margin: 1.5rem auto;
-          width: calc(100% - 3rem);
-          height: calc(100vh - 3rem);
-          border-radius: 18px;
           position: relative;
+          height: 100vh;
+          width: 100%;
           overflow: hidden;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
-       /* fixed hero background with smooth overlay transition */
-.hero-bg {
-  position: fixed;
-  top: 1.5rem;
-  left: 1.5rem;
-  width: calc(100% - 3rem);
-  height: calc(100vh - 3rem);
-  border-radius: 18px;
-  overflow: hidden;
-  z-index: 0;
-}
-
-/* image layers */
-.hero-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: var(--hero-image);
-  opacity: 0;
-  transform: scale(1.1);
-  transition:
-    opacity 1.5s ease-in-out,
-    transform 8s ease-out;
-}
-
-/* active image visible and slightly zooms out */
-.hero-bg.active::before {
-  opacity: 1;
-  transform: scale(1);
-}
-        .hero-overlay {
+        /* STACK MULTIPLE BACKGROUND IMAGES */
+        .hero-bg {
           position: fixed;
-          top: 1.5rem;
-          left: 1.5rem;
-          width: calc(100% - 3rem);
-          height: calc(100vh - 3rem);
-          border-radius: 18px;
-          background: linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.35) 0%,
-            rgba(0, 0, 0, 0.1) 60%,
-            rgba(0, 0, 0, 0.4) 100%
-          );
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          z-index: 0;
+        }
+
+        .hero-bg img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0;
+          transform: scale(1.1);
+          transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+        }
+
+        .hero-bg img.active {
+          opacity: 1;
+          transform: scale(1);
           z-index: 1;
         }
 
-        /* --- NAV MENU --- */
+        /* OVERLAY */
+        .hero-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.35) 0%,
+            rgba(0, 0, 0, 0.15) 50%,
+            rgba(0, 0, 0, 0.45) 100%
+          );
+          z-index: 2;
+        }
+
+        /* NAV MENU */
         .nav-menu {
           position: fixed;
-          top: 2.4rem;
+          top: 2.5rem;
           left: 50%;
           transform: translateX(-50%);
           display: flex;
           gap: 3rem;
-          z-index: 5;
+          z-index: 10;
         }
+
         .nav-item {
           text-align: center;
           cursor: pointer;
@@ -130,28 +119,28 @@ export default function Home() {
           text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
           transition: opacity 0.3s ease;
         }
+
         .nav-item:hover {
           opacity: 0.75;
         }
+
         .nav-item span {
           display: block;
           margin-top: 0.2rem;
           font-family: "Noto Serif JP", serif;
           font-size: 0.8rem;
           color: #d6c68a;
-          letter-spacing: 0.04em;
         }
 
-        /* remove link underline */
         .nav-menu a {
           text-decoration: none !important;
           border: none !important;
         }
 
-        /* --- Hamburger --- */
+        /* HAMBURGER */
         .hamburger {
           position: fixed;
-          top: 2.2rem;
+          top: 2.4rem;
           right: 2.4rem;
           width: 30px;
           height: 22px;
@@ -159,47 +148,49 @@ export default function Home() {
           flex-direction: column;
           justify-content: space-between;
           cursor: pointer;
-          z-index: 6;
+          z-index: 11;
         }
+
         .hamburger span {
-          display: block;
           height: 2px;
           background: #f6f4ed;
           border-radius: 2px;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.4s ease;
         }
+
         .hamburger.open span:nth-child(1) {
           transform: rotate(45deg) translateY(9px);
         }
+
         .hamburger.open span:nth-child(2) {
           opacity: 0;
         }
+
         .hamburger.open span:nth-child(3) {
           transform: rotate(-45deg) translateY(-9px);
         }
 
-        /* --- Slide Menu --- */
+        /* SLIDE MENU */
         .slide-menu {
           position: fixed;
           top: 0;
           right: 0;
           height: 100%;
           width: 60%;
-          max-width: 420px;
-          background-image: url("/washi_gold.jpg");
-          background-size: cover;
-          background-position: center;
+          max-width: 400px;
+          background: url("/washi_gold.jpg") center/cover;
           transform: translateX(100%);
           opacity: 0;
-          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-            opacity 0.4s ease;
+          transition: all 0.6s ease;
           z-index: 20;
           padding: 4rem 2rem;
         }
+
         .slide-menu.open {
           transform: translateX(0);
           opacity: 1;
         }
+
         .slide-menu a {
           display: block;
           margin: 2rem 0;
@@ -207,8 +198,8 @@ export default function Home() {
           font-size: 1.6rem;
           color: #2b2b2b;
           text-decoration: none;
-          text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
         }
+
         .slide-menu a span {
           display: block;
           font-family: "Noto Serif JP", serif;
@@ -223,8 +214,8 @@ export default function Home() {
           width: 32px;
           height: 32px;
           cursor: pointer;
-          z-index: 25;
         }
+
         .slide-close::before,
         .slide-close::after {
           content: "";
@@ -232,48 +223,51 @@ export default function Home() {
           width: 20px;
           height: 2px;
           background-color: #2b2b2b;
-          border-radius: 2px;
         }
+
         .slide-close::before {
           transform: rotate(45deg);
         }
+
         .slide-close::after {
           transform: rotate(-45deg);
         }
 
-        /* --- Hero container --- */
+        /* HERO CONTENT */
         .hero-container {
           position: relative;
-          z-index: 2;
-          height: calc(100vh - 3rem);
+          z-index: 3;
+          height: 100vh;
           overflow-y: auto;
           scroll-behavior: smooth;
         }
+
         .hero-container::-webkit-scrollbar {
           display: none;
         }
+
         .hero-content {
-          color: #fff;
           text-align: center;
+          color: #fff;
           font-family: "Noto Serif JP", serif;
           padding-top: 40vh;
           min-height: 200vh;
         }
+
         .title {
           font-family: "Cormorant Garamond", serif;
           font-size: 3.4rem;
           margin-bottom: 1rem;
-          letter-spacing: 0.08em;
           color: #f7f4ef;
         }
+
         .subtitle {
-          font-size: 1.15rem;
+          font-size: 1.1rem;
           max-width: 640px;
           margin: 0 auto;
-          opacity: 0.95;
-          line-height: 1.9;
           color: #f4f2eb;
           text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+          line-height: 1.8;
         }
 
         .dummy-section {
@@ -281,18 +275,24 @@ export default function Home() {
           color: #f7f4ef;
           text-align: center;
           padding: 8rem 1.5rem;
-          font-family: "Noto Serif JP", serif;
         }
       `}</style>
 
       <div className="hero-wrapper">
-        <div
-          className={`hero-bg active`}
-          style={{ "--hero-image": `url(${images[currentIndex]})` }}
-        ></div>
+        <div className="hero-bg">
+          {images.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt=""
+              className={i === currentIndex ? "active" : ""}
+            />
+          ))}
+        </div>
+
         <div className="hero-overlay" />
 
-        {/* Top menu */}
+        {/* Top Menu */}
         <nav className="nav-menu">
           <Link href="/about">
             <div className="nav-item">
@@ -321,7 +321,7 @@ export default function Home() {
           <span></span>
         </div>
 
-        {/* Slide menu */}
+        {/* Slide Menu */}
         <div className={`slide-menu ${menuOpen ? "open" : ""}`}>
           <div className="slide-close" onClick={() => setMenuOpen(false)} />
           <Link href="/about">
@@ -335,7 +335,7 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Hero text content */}
+        {/* Scrollable Text Content */}
         <div className="hero-container" ref={heroRef}>
           <div className="hero-content">
             <h1 className="title">宿 -SHUKU-</h1>
@@ -357,7 +357,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Page content */}
+      {/* Page content BELOW hero */}
       <div
         style={{
           height: "150vh",
