@@ -66,22 +66,39 @@ export default function Home() {
           z-index: 0;
         }
 
-        .hero-bg img {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          opacity: 0;
-          transform: scale(1.15);
-          transition: opacity 1.2s ease-in-out, transform 5s ease-out;
-          will-change: transform, opacity;
-        }
+      /* --- HERO IMAGE TRANSITIONS --- */
+.hero-bg img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.18);
+  transition:
+    opacity 1.8s ease-in-out,
+    transform 6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  z-index: 0;
+}
 
-        .hero-bg img.active {
-          opacity: 1;
-          transform: scale(1);
-          z-index: 1;
-        }
+/* Active image: fades in and zooms out */
+.hero-bg img.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1;
+  animation: zoomOut 8s ease-out forwards;
+}
+
+/* Keyframes for continuous zoom-out motion */
+@keyframes zoomOut {
+  0% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 
         /* --- OVERLAY --- */
         .hero-overlay {
