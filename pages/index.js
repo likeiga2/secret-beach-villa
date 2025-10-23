@@ -53,8 +53,16 @@ export default function Home() {
           border-radius: 18px;
           overflow: hidden;
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-          transition: filter 0.5s ease;
-          filter: ${menuOpen ? "blur(8px) brightness(0.8)" : "none"};
+        }
+
+        /* --- BLUR BACKGROUND WHEN MENU OPEN --- */
+        .hero-blur-layer {
+          position: absolute;
+          inset: 0;
+          backdrop-filter: ${menuOpen ? "blur(10px) brightness(0.8)" : "none"};
+          transition: backdrop-filter 0.5s ease;
+          z-index: 10;
+          pointer-events: none;
         }
 
         /* --- HERO BACKGROUND --- */
@@ -73,7 +81,7 @@ export default function Home() {
           height: 100%;
           object-fit: cover;
           opacity: 0;
-          transform: scale(1.15);
+          transform: scale(1.2);
           transition:
             opacity 1.8s ease-in-out,
             transform 8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -146,7 +154,7 @@ export default function Home() {
           flex-direction: column;
           justify-content: space-between;
           cursor: pointer;
-          z-index: 6;
+          z-index: 15;
         }
         .hamburger span {
           height: 2px;
@@ -177,7 +185,7 @@ export default function Home() {
           opacity: 0;
           transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
             opacity 0.4s ease;
-          z-index: 20;
+          z-index: 30;
           padding: 4rem 2rem;
         }
         .slide-menu.open {
@@ -206,7 +214,7 @@ export default function Home() {
           width: 32px;
           height: 32px;
           cursor: pointer;
-          z-index: 25;
+          z-index: 35;
         }
         .slide-close::before,
         .slide-close::after {
@@ -281,6 +289,7 @@ export default function Home() {
         </div>
 
         <div className="hero-overlay" />
+        <div className="hero-blur-layer" />
 
         {/* --- TOP MENU --- */}
         <nav className="nav-menu">
