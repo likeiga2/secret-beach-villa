@@ -7,6 +7,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const heroRef = useRef(null);
 
+  /* --- Auto image rotation --- */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -14,6 +15,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  /* --- Scroll handoff --- */
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -55,7 +57,7 @@ export default function Home() {
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
         }
 
-        /* --- BLUR BACKGROUND WHEN MENU OPEN --- */
+        /* --- BLUR WHEN MENU OPEN --- */
         .hero-blur-layer {
           position: absolute;
           inset: 0;
@@ -74,23 +76,32 @@ export default function Home() {
           z-index: 0;
         }
 
-        /* --- CROSSFADE + ZOOM EFFECT --- */
+        /* --- CROSSFADE + ZOOM --- */
         .hero-bg img {
           position: absolute;
           width: 100%;
           height: 100%;
           object-fit: cover;
           opacity: 0;
-          transform: scale(1.2);
-          transition:
-            opacity 1.8s ease-in-out,
-            transform 8s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: scale(1.12);
+          transition: opacity 2s ease-in-out;
+          animation: none;
           z-index: 0;
         }
+
         .hero-bg img.active {
           opacity: 1;
-          transform: scale(1);
+          animation: zoomOut 8s ease-in-out forwards;
           z-index: 1;
+        }
+
+        @keyframes zoomOut {
+          0% {
+            transform: scale(1.12);
+          }
+          100% {
+            transform: scale(1);
+          }
         }
 
         /* --- OVERLAY --- */
@@ -155,6 +166,11 @@ export default function Home() {
           justify-content: space-between;
           cursor: pointer;
           z-index: 15;
+          transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .hamburger:hover {
+          transform: scale(1.1);
+          filter: brightness(1.4);
         }
         .hamburger span {
           height: 2px;
