@@ -7,7 +7,6 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const heroRef = useRef(null);
 
-  /* --- Auto image rotation --- */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -15,7 +14,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  /* --- Scroll handoff --- */
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -55,6 +53,8 @@ export default function Home() {
           border-radius: 18px;
           overflow: hidden;
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+          transition: filter 0.5s ease;
+          filter: ${menuOpen ? "blur(8px) brightness(0.8)" : "none"};
         }
 
         /* --- HERO BACKGROUND --- */
@@ -66,56 +66,24 @@ export default function Home() {
           z-index: 0;
         }
 
-/* --- HERO IMAGE TRANSITIONS (cross-fade + zoom-out) --- */
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  overflow: hidden;
-  z-index: 0;
-}
-
-/* Base layer */
-.hero-bg img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1.15);
-  transition:
-    opacity 2.2s ease-in-out,
-    transform 7s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform, opacity;
-  pointer-events: none;
-}
-
-/* Active image (on top) fades in and zooms out */
-.hero-bg img.active {
-  opacity: 1;
-  transform: scale(1);
-  z-index: 2;
-}
-
-/* Previous image (just below) remains visible shortly for true overlap */
-.hero-bg img.previous {
-  opacity: 1;
-  z-index: 1;
-  transition: opacity 2.2s ease-in-out;
-}
-
-/* Keyframes for continuous zoom-out motion */
-@keyframes zoomOut {
-  0% {
-    transform: scale(1.18);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
+        /* --- CROSSFADE + ZOOM EFFECT --- */
+        .hero-bg img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0;
+          transform: scale(1.15);
+          transition:
+            opacity 1.8s ease-in-out,
+            transform 8s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 0;
+        }
+        .hero-bg img.active {
+          opacity: 1;
+          transform: scale(1);
+          z-index: 1;
+        }
 
         /* --- OVERLAY --- */
         .hero-overlay {
@@ -230,6 +198,7 @@ export default function Home() {
           font-size: 0.85rem;
           color: #6a5d37;
         }
+
         .slide-close {
           position: absolute;
           top: 24px;
@@ -301,17 +270,14 @@ export default function Home() {
 
       <div className="hero-wrapper">
         <div className="hero-bg">
-    {images.map((src, i) => {
-  const prevIndex =
-    (currentIndex - 1 + images.length) % images.length;
-  const cls =
-    i === currentIndex
-      ? "active"
-      : i === prevIndex
-      ? "previous"
-      : "";
-  return <img key={i} src={src} alt="" className={cls} />;
-})}
+          {images.map((src, i) => (
+            <img
+              key={`${i}-${currentIndex === i}`}
+              src={src}
+              alt=""
+              className={i === currentIndex ? "active" : ""}
+            />
+          ))}
         </div>
 
         <div className="hero-overlay" />
