@@ -61,34 +61,39 @@ export default function Home() {
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
-        /* fixed hero background */
-        .hero-bg {
-          position: fixed;
-          top: 1.5rem;
-          left: 1.5rem;
-          width: calc(100% - 3rem);
-          height: calc(100vh - 3rem);
-          border-radius: 18px;
-          overflow: hidden;
-          z-index: 0;
-        }
-        .hero-bg::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-image: var(--hero-image);
-          transform: scale(1.02);
-          transition: transform 10s ease-out, opacity 1s ease-in-out;
-          opacity: 1;
-        }
-        .hero-bg.active::before {
-          transform: scale(1);
-          opacity: 1;
-        }
+       /* fixed hero background with smooth overlay transition */
+.hero-bg {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  width: calc(100% - 3rem);
+  height: calc(100vh - 3rem);
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 0;
+}
 
+/* image layers */
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: var(--hero-image);
+  opacity: 0;
+  transform: scale(1.1);
+  transition:
+    opacity 1.5s ease-in-out,
+    transform 8s ease-out;
+}
+
+/* active image visible and slightly zooms out */
+.hero-bg.active::before {
+  opacity: 1;
+  transform: scale(1);
+}
         .hero-overlay {
           position: fixed;
           top: 1.5rem;
