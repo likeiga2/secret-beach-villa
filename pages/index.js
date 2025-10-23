@@ -66,7 +66,6 @@ export default function Home() {
           z-index: 0;
         }
 
-        /* --- HERO IMAGE TRANSITIONS --- */
         .hero-bg img {
           position: absolute;
           width: 100%;
@@ -276,36 +275,6 @@ export default function Home() {
         .hero-container::-webkit-scrollbar {
           display: none;
         }
-        .hero-content {
-          text-align: center;
-          color: #fff;
-          font-family: "Noto Serif JP", serif;
-          padding-top: 40vh;
-          min-height: 200vh;
-        }
-        .title {
-          font-family: "Cormorant Garamond", serif;
-          font-size: 3.4rem;
-          margin-bottom: 1rem;
-          letter-spacing: 0.08em;
-          color: #f7f4ef;
-        }
-        .subtitle {
-          font-size: 1.1rem;
-          max-width: 640px;
-          margin: 0 auto;
-          opacity: 0.95;
-          line-height: 1.9;
-          color: #f4f2eb;
-          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-        }
-        .dummy-section {
-          background: rgba(0, 0, 0, 0.3);
-          color: #f7f4ef;
-          text-align: center;
-          padding: 8rem 1.5rem;
-          font-family: "Noto Serif JP", serif;
-        }
       `}</style>
 
       <div className="hero-wrapper">
@@ -366,27 +335,6 @@ export default function Home() {
           <Link href="/contact">
             Contact<span>お問い合わせ</span>
           </Link>
-        </div>
-
-        {/* --- HERO TEXT / SCROLL AREA --- */}
-        <div className="hero-container" ref={heroRef}>
-          <div className="hero-content">
-            <h1 className="title">宿 -SHUKU-</h1>
-            <p className="subtitle">
-              心とからだをほどく。忍冬香る古蔵にて。
-              <br />
-              静けさの中に佇む時間をお愉しみください。
-            </p>
-          </div>
-
-          <div className="dummy-section">
-            <h2>宿について</h2>
-            <p>
-              下にスクロールすると説明文が出てきます。
-              <br />
-              Hero内最下部に達すると全ページがスクロール開始します。
-            </p>
-          </div>
         </div>
       </div>
 
