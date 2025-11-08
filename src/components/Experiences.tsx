@@ -216,13 +216,14 @@ export default function Experiences({ language }: ExperiencesProps) {
                       {language === 'en' ? 'Activities' : 'アクティビティ'}
                     </h4>
                     <ul className="space-y-2">
-  {season.activities.map((activity, activityIndex) => (
-    <li key={activityIndex} className="text-small text-neutral-600 flex items-start">
-      <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 mr-3 flex-shrink-0" />
-      <span className="break-words overflow-hidden">{activity}</span>
-    </li>
-  ))}
-</ul>
+                      {season.activities.map((activity, activityIndex) => (
+                        <li key={activityIndex} className="text-small text-neutral-600 flex items-start">
+                          <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 mr-3 flex-shrink-0" />
+                          <span className="break-words overflow-hidden">{activity}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               )
             })}
