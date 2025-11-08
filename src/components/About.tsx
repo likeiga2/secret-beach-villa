@@ -84,25 +84,24 @@ export default function About({ language }: AboutProps) {
           </div>
 
           {/* Features Grid - 5 columns */}
-          <div className="lg:col-span-5">
-            <div className="grid sm:grid-cols-2 gap-6">
-              {t.features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="p-6 bg-background-elevated rounded-xl border border-neutral-200/50 hover:shadow-luxury transition-all duration-slow luxury-hover group"
-                >
-                  <h3 className="font-display font-semibold text-subhead-mobile lg:text-subhead text-neutral-900 mb-4 group-hover:text-primary-600 transition-colors duration-slow">
-                    {feature.title}
-                  </h3>
-                  <p className="text-body text-neutral-700 leading-relaxed">
-                    {feature.description}
-                  </p>
-                  <div className="mt-4 w-12 h-1 bg-primary-500/20 group-hover:bg-primary-500/40 transition-colors duration-slow rounded-full" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+<div className="lg:col-span-5">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+    {t.features.map((feature, index) => (
+      <div
+        key={index}
+        className="p-4 lg:p-6 bg-background-elevated rounded-xl border border-neutral-200/50 hover:shadow-luxury transition-all duration-slow luxury-hover group min-h-[160px] lg:min-h-[180px]"
+      >
+        <h3 className="font-display font-semibold text-subhead-mobile lg:text-subhead text-neutral-900 mb-3 lg:mb-4 group-hover:text-primary-600 transition-colors duration-slow leading-tight">
+          {feature.title}
+        </h3>
+        <p className="text-body text-neutral-700 leading-relaxed break-words overflow-hidden">
+          {feature.description}
+        </p>
+        <div className="mt-3 lg:mt-4 w-8 lg:w-12 h-1 bg-primary-500/20 group-hover:bg-primary-500/40 transition-colors duration-slow rounded-full" />
+      </div>
+    ))}
+  </div>
+</div>
 
         {/* Background Image - Decorative */}
         <div className="relative mt-16 lg:mt-24">
