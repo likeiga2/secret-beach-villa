@@ -1,0 +1,105 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap');
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Luxury spacing utility classes */
+.section-spacing {
+  padding: 96px 0;
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: 80px 0;
+  }
+}
+
+/* Bronze gradient for primary CTA */
+.bronze-gradient {
+  background: linear-gradient(135deg, #CD7F32 0%, #E8C59A 50%, #B8691E 100%);
+}
+
+.bronze-gradient:hover {
+  filter: brightness(1.1);
+}
+
+/* Enhanced shadow utilities for luxury design */
+.shadow-luxury {
+  box-shadow: 0 20px 40px rgba(28, 28, 25, 0.12), 0 8px 16px rgba(28, 28, 25, 0.08), 0 4px 8px rgba(28, 28, 25, 0.04);
+}
+
+.shadow-luxury-lg {
+  box-shadow: 0 32px 64px rgba(28, 28, 25, 0.15), 0 16px 32px rgba(28, 28, 25, 0.10), 0 8px 16px rgba(28, 28, 25, 0.06);
+}
+
+.shadow-card {
+  box-shadow: 0 8px 24px rgba(28, 28, 25, 0.10), 0 4px 12px rgba(28, 28, 25, 0.05), 0 2px 6px rgba(28, 28, 25, 0.03);
+}
+
+.shadow-hover {
+  box-shadow: 0 12px 32px rgba(28, 28, 25, 0.15), 0 6px 16px rgba(28, 28, 25, 0.08), 0 3px 8px rgba(28, 28, 25, 0.04);
+}
+
+/* Animation utilities */
+.animate-luxury {
+  animation-duration: 600ms;
+  animation-timing-function: ease-in-out;
+}
+
+/* Luxury hover effects */
+.luxury-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.luxury-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(28, 28, 25, 0.15), 0 8px 16px rgba(28, 28, 25, 0.08);
+}
+
+/* Premium borders */
+.border-luxury {
+  border: 1px solid rgba(107, 58, 58, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.border-luxury:hover {
+  border-color: rgba(107, 58, 58, 0.2);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5F4F0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6B3A3A;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5A2F2F;
+}
