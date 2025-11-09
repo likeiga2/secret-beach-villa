@@ -9,7 +9,7 @@ import Contact from './components/Contact'
 import './App.css'
 
 function App() {
-  const [language, setLanguage] = useState<'en' | 'ja'>('en')
+  const [language, setLanguage] = useState<'en' | 'ja' | 'zh' | 'ko'>('en')
 
   return (
     <div className="min-h-screen bg-background-primary font-body">
