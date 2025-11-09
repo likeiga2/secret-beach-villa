@@ -89,12 +89,19 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0]
 
   return (
-    <>
+    <nav 
+      className={`fixed top-0 w-full z-50 transition-all duration-base border-b ${
+        isScrolled 
+          ? 'bg-background-elevated/95 backdrop-blur-sm shadow-card border-neutral-200/30' 
+          : 'bg-white/80 backdrop-blur-sm border-neutral-200/20 shadow-sm'
+      }`}
+      style={{ height: '96px' }}
+    >
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <a
-            href="#home"
+          <a 
+            href="#home" 
             className="text-2xl font-display font-semibold text-neutral-900 hover:text-primary-500 transition-colors duration-fast drop-shadow-sm"
           >
             {t.logo}
@@ -126,15 +133,11 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
               className="flex items-center space-x-2 px-4 py-2 text-sm font-semibold text-neutral-700 hover:text-primary-500 hover:bg-primary-50 transition-all duration-fast border border-neutral-200 hover:border-primary-300 rounded-lg shadow-sm hover:shadow-md bg-white/50 backdrop-blur-sm group"
             >
               <Globe size={16} className="text-neutral-500" />
-              <span className="hidden sm:inline">
-                {currentLanguage.flag} {currentLanguage.nativeName}
-              </span>
+              <span className="hidden sm:inline">{currentLanguage.flag} {currentLanguage.nativeName}</span>
               <span className="sm:hidden">{currentLanguage.flag}</span>
-              <ChevronDown
-                size={14}
-                className={`text-neutral-500 transition-transform duration-fast ${
-                  isLanguageOpen ? 'rotate-180' : ''
-                }`}
+              <ChevronDown 
+                size={14} 
+                className={`text-neutral-500 transition-transform duration-fast ${isLanguageOpen ? 'rotate-180' : ''}`} 
               />
             </button>
 
@@ -150,8 +153,8 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
                         setIsLanguageOpen(false)
                       }}
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-primary-50 transition-colors duration-fast ${
-                        language === lang.code
-                          ? 'bg-primary-50 text-primary-600 font-semibold'
+                        language === lang.code 
+                          ? 'bg-primary-50 text-primary-600 font-semibold' 
                           : 'text-neutral-700'
                       }`}
                     >
@@ -168,7 +171,7 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
           </div>
 
           {/* Book Now Button */}
-          <button
+          <button 
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             className="hidden lg:block h-12 px-6 bg-primary-500 text-neutral-50 font-semibold text-sm tracking-wider rounded-lg hover:bg-primary-600 hover:scale-105 transition-all duration-fast shadow-lg hover:shadow-xl border border-primary-400/20"
           >
@@ -200,7 +203,7 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
                 {item.label}
               </a>
             ))}
-
+            
             {/* Mobile Language Selector */}
             <div className="pt-2 border-t border-neutral-200">
               <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-3 px-2">
@@ -215,8 +218,8 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
                       setIsMobileMenuOpen(false)
                     }}
                     className={`flex items-center space-x-2 px-3 py-2 text-left rounded-md transition-colors duration-fast ${
-                      language === lang.code
-                        ? 'bg-primary-50 text-primary-600 border border-primary-200'
+                      language === lang.code 
+                        ? 'bg-primary-50 text-primary-600 border border-primary-200' 
                         : 'text-neutral-700 hover:bg-neutral-50 border border-neutral-200'
                     }`}
                   >
@@ -226,11 +229,11 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
                 ))}
               </div>
             </div>
-
-            <button
+            
+            <button 
               onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-                setIsMobileMenuOpen(false)
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                setIsMobileMenuOpen(false);
               }}
               className="w-full h-12 bg-primary-500 text-neutral-50 font-semibold text-sm tracking-wider rounded-lg hover:bg-primary-600 transition-colors duration-fast mt-4 shadow-lg"
             >
@@ -239,6 +242,6 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
           </div>
         </div>
       )}
-    </>
+    </nav>
   )
 }
