@@ -230,8 +230,9 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
           className="w-full h-12 bg-primary-500 text-neutral-50 font-semibold text-sm tracking-wider rounded-lg hover:bg-primary-600 transition-colors duration-fast mt-4 shadow-lg"
         >
           {t.bookNow}
-        </button>
+               </button>
       </div>
     </div>
   )}
-```
+  )
+}
