@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown, Globe } from 'lucide-react'
 
 interface NavigationProps {
-  language: 'en' | 'ja'
-  setLanguage: (lang: 'en' | 'ja') => void
+  language: 'en' | 'ja' | 'zh' | 'ko'
+  setLanguage: (lang: 'en' | 'ja' | 'zh' | 'ko') => void
 }
 
 const content = {
@@ -17,6 +17,7 @@ const content = {
     ],
     bookNow: 'Book Now',
     logo: 'Ryokan',
+    languageName: 'English',
   },
   ja: {
     navItems: [
@@ -28,12 +29,45 @@ const content = {
     ],
     bookNow: '今すぐ予約',
     logo: '旅館',
+    languageName: '日本語',
+  },
+  zh: {
+    navItems: [
+      { label: '关于我们', href: '#about' },
+      { label: '客房', href: '#rooms' },
+      { label: '体验', href: '#experiences' },
+      { label: '交通', href: '#access' },
+      { label: '联系', href: '#contact' },
+    ],
+    bookNow: '立即预订',
+    logo: '旅馆',
+    languageName: '中文',
+  },
+  ko: {
+    navItems: [
+      { label: '소개', href: '#about' },
+      { label: '객실', href: '#rooms' },
+      { label: '체험', href: '#experiences' },
+      { label: '교통', href: '#access' },
+      { label: '문의', href: '#contact' },
+    ],
+    bookNow: '지금 예약',
+    logo: '료칸',
+    languageName: '한국어',
   },
 }
+
+const languages = [
+  { code: 'en' as const, name: 'English', nativeName: 'English', flag: '🇺🇸' },
+  { code: 'ja' as const, name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
+  { code: 'zh' as const, name: 'Chinese', nativeName: '中文', flag: '🇨🇳' },
+  { code: 'ko' as const, name: 'Korean', nativeName: '한국어', flag: '🇰🇷' },
+]
 
 export default function Navigation({ language, setLanguage }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,96 +77,16 @@ export default function Navigation({ language, setLanguage }: NavigationProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    const handleClickOutside = () => setIsLanguageOpen(false)
+    if (isLanguageOpen) {
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isLanguageOpen])
+
   const t = content[language]
+  const currentLanguage = languages.find(lang => lang.code === language) || languages[0]
 
   return (
-    <nav 
-      className={`fixed top-0 w-full z-50 transition-all duration-base border-b ${
-        isScrolled 
-          ? 'bg-background-elevated/95 backdrop-blur-sm shadow-card border-neutral-200/30' 
-          : 'bg-white/80 backdrop-blur-sm border-neutral-200/20 shadow-sm'
-      }`}
-      style={{ height: '96px' }}
-    >
-      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex-shrink-0">
-          <a 
-            href="#home" 
-            className="text-2xl font-display font-semibold text-neutral-900 hover:text-primary-500 transition-colors duration-fast drop-shadow-sm"
-          >
-            {t.logo}
-          </a>
-        </div>
-
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center space-x-8">
-          {t.navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="text-sm font-medium tracking-wider text-neutral-700 hover:text-primary-500 transition-all duration-fast border-b-2 border-transparent hover:border-primary-500 pb-2 px-2 rounded-sm hover:bg-primary-50/30"
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-
-        {/* Language Toggle & CTA */}
-        <div className="flex items-center space-x-4">
-          {/* Language Toggle */}
-          <button
-            onClick={() => setLanguage(language === 'en' ? 'ja' : 'en')}
-            className="px-4 py-2 text-sm font-semibold text-neutral-700 hover:text-primary-500 hover:bg-primary-50 transition-all duration-fast border border-neutral-200 hover:border-primary-300 rounded-lg shadow-sm hover:shadow-md bg-white/50 backdrop-blur-sm"
-          >
-            {language === 'en' ? '日本語' : 'EN'}
-          </button>
-
-          {/* Book Now Button */}
-          <button 
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="hidden lg:block h-12 px-6 bg-primary-500 text-neutral-50 font-semibold text-sm tracking-wider rounded-lg hover:bg-primary-600 hover:scale-105 transition-all duration-fast shadow-lg hover:shadow-xl border border-primary-400/20"
-          >
-            {t.bookNow}
-          </button>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-neutral-700 hover:text-primary-500 transition-colors duration-fast"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden bg-background-elevated border-t border-neutral-200 shadow-lg">
-          <div className="px-6 py-4 space-y-4">
-            {t.navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-neutral-700 hover:text-primary-500 transition-colors duration-fast py-3 px-2 rounded-md hover:bg-primary-50/50 font-medium"
-              >
-                {item.label}
-              </a>
-            ))}
-            <button 
-              onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-full h-12 bg-primary-500 text-neutral-50 font-semibold text-sm tracking-wider rounded-lg hover:bg-primary-600 transition-colors duration-fast mt-4 shadow-lg"
-            >
-              {t.bookNow}
-            </button>
-          </div>
-        </div>
-      )}
-    </nav>
-  )
-}
+    
